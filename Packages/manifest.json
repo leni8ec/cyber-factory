@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.coffee.upm-git-extension": "2.1.1",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ide.rider": "3.0.31",
     "com.unity.ide.visualstudio": "2.0.22",
@@ -18,5 +19,14 @@
     "com.unity.modules.unitywebrequestaudio": "1.0.0",
     "com.unity.modules.unitywebrequesttexture": "1.0.0",
     "com.unity.modules.unitywebrequestwww": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.coffee.upm-git-extension"
+      ]
+    }
+  ]
 }
