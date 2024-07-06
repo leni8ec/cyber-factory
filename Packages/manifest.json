@@ -8,6 +8,7 @@
     "com.unity.inputsystem": "1.8.2",
     "com.unity.mobile.android-logcat": "1.4.2",
     "com.unity.ugui": "2.0.0",
+    "jp.hadashikick.vcontainer": "1.16.2",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
     "com.unity.modules.imgui": "1.0.0",
@@ -27,7 +28,8 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.coffee.upm-git-extension",
-        "com.cysharp.unitask"
+        "com.cysharp.unitask",
+        "jp.hadashikick.vcontainer"
       ]
     }
   ]
