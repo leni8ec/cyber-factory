@@ -33,6 +33,7 @@ MonoBehaviour:
     m_Scopes:
     - com.coffee.upm-git-extension
     - com.cysharp.unitask
+    - com.scellecs.morpeh
     - jp.hadashikick.vcontainer
     m_IsDefault: 0
     m_Capabilities: 0
