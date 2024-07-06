@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.coffee.upm-git-extension": "2.1.1",
     "com.cysharp.unitask": "2.5.5",
     "com.scellecs.morpeh": "2024.1.1",
     "com.unity.2d.sprite": "1.0.0",
@@ -28,7 +27,6 @@
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.coffee.upm-git-extension",
         "com.cysharp.unitask",
         "com.scellecs.morpeh",
         "jp.hadashikick.vcontainer"

@@ -31,7 +31,6 @@ MonoBehaviour:
     m_Name: package.openupm.com
     m_Url: https://package.openupm.com
     m_Scopes:
-    - com.coffee.upm-git-extension
     - com.cysharp.unitask
     - com.scellecs.morpeh
     - jp.hadashikick.vcontainer
