@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.codewriter.triinspector": {
+      "version": "https://github.com/codewriter-packages/Tri-Inspector.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.localization": "1.0.0"
+      },
+      "hash": "6c844f0b69b2843808a0d30aec46cdd3486cce0f"
+    },
     "com.cysharp.unitask": {
       "version": "2.5.5",
       "depth": 0,
@@ -53,6 +62,13 @@
         "com.unity.modules.uielements": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.localization": {
+      "version": "https://github.com/codewriter-packages/Unity-Localization-Stub-for-Tri-Inspector.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "184244fa1721e8e5da6aff2aca29b92f0a1e5ec7"
     },
     "com.unity.mobile.android-logcat": {
       "version": "1.4.2",
