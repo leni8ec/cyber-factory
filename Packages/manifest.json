@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.codewriter.triinspector": "https://github.com/codewriter-packages/Tri-Inspector.git",
+    "com.codewriter.triinspector": "1.14.0",
     "com.cysharp.unitask": "2.5.5",
     "com.scellecs.morpeh": "2024.1.1",
     "com.unity.2d.sprite": "1.0.0",

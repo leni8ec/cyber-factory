@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "com.codewriter.triinspector": {
-      "version": "https://github.com/codewriter-packages/Tri-Inspector.git",
+      "version": "1.14.0",
       "depth": 0,
-      "source": "git",
+      "source": "registry",
       "dependencies": {
         "com.unity.localization": "1.0.0"
       },
-      "hash": "6c844f0b69b2843808a0d30aec46cdd3486cce0f"
+      "url": "https://package.openupm.com"
     },
     "com.cysharp.unitask": {
       "version": "2.5.5",
