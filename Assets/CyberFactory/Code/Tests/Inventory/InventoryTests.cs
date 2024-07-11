@@ -1,7 +1,9 @@
-﻿using CyberFactory.Common;
-using CyberFactory.Inventory;
-using CyberFactory.Inventory.Services;
-using CyberFactory.Products;
+﻿using CyberFactory.Common.Components;
+using CyberFactory.Inventories.Components;
+using CyberFactory.Inventories.Services;
+using CyberFactory.Inventories.Systems;
+using CyberFactory.Products.Components;
+using CyberFactory.Products.Configs;
 using NUnit.Framework;
 using Scellecs.Morpeh;
 using UnityEngine;
@@ -37,8 +39,8 @@ namespace CyberFactory.Tests.Inventory {
         [TestCase(1, 1, 1, ExpectedResult = 3)]
         [TestCase(5, 2, 0, ExpectedResult = 7)]
         public long TestItemsCount(long initCount, long pull1Count, long pull2Count) {
-            service = testWorld.Filter.With<CyberFactory.Inventory.Inventory>().Build()
-                .FirstOrDefault().GetComponent<CyberFactory.Inventory.Inventory>().service;
+            service = testWorld.Filter.With<Inventories.Components.Inventory>().Build()
+                .FirstOrDefault().GetComponent<Inventories.Components.Inventory>().service;
 
             // Process
             Debug.Log("----- Start -----");
