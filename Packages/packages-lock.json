@@ -7,6 +7,13 @@
       "dependencies": {},
       "hash": "8eecc3bf9440af87ef3c66bf7a1ff210ff361c03"
     },
+    "com.codewriter.morpeh.systemstateprocessor": {
+      "version": "https://github.com/codewriter-packages/Morpeh.SystemStateProcessor.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "322531044f5c332efa1bffa820968279005222d7"
+    },
     "com.codewriter.triinspector": {
       "version": "1.14.0",
       "depth": 0,
