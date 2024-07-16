@@ -187,6 +187,12 @@ MonoBehaviour:
     system: {fileID: 11400000, guid: ea6feaddc28c1d040bfe08070a248dc7, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 53ece0391021df644b59496568b41002, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: f9352f9c81400b144a7ef8c8e48401be, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 50c2bff53160fc5498602b07df1b47a6, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 921516a845b8b3547abf716cf41361fa, type: 2}
   fixedUpdateSystems: []
   lateUpdateSystems: []
   cleanupSystems: []
@@ -255,7 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    product: {fileID: 11400000, guid: c5961eaa3fc110b4ea485f2e798e4833, type: 2}
+    model: {fileID: 0}
 --- !u!114 &1381074430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    product: {fileID: 11400000, guid: 367552eba0c4fd8409a6ec13372cdae7, type: 2}
+    model: {fileID: 0}
 --- !u!114 &1381074432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    product: {fileID: 11400000, guid: 2f59a81c40e817c439b69fca03b33a19, type: 2}
+    model: {fileID: 0}
 --- !u!114 &1381074433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    product: {fileID: 0}
+    model: {fileID: 0}
 --- !u!114 &1652681208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,7 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    product: {fileID: 0}
+    model: {fileID: 0}
 --- !u!114 &1652681209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,7 +405,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    product: {fileID: 0}
+    model: {fileID: 0}
 --- !u!114 &1652681210
 MonoBehaviour:
   m_ObjectHideFlags: 0

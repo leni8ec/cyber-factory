@@ -3,9 +3,9 @@ using TriInspector;
 using UnityEngine;
 
 namespace CyberFactory.Basics.Objects {
-
     [Serializable] [InlineProperty] [DeclareHorizontalGroup("Group")]
     public struct PairValue<TKey, TValue> {
+
         [SerializeField] [HideLabel] [Group("Group")]
         private TKey key;
         [SerializeField] [HideLabel] [Group("Group")]
@@ -18,6 +18,11 @@ namespace CyberFactory.Basics.Objects {
             this.key = key;
             this.value = value;
         }
-    }
 
+        public void Deconstruct(out TKey key, out TValue value) {
+            key = this.key;
+            value = this.value;
+        }
+
+    }
 }

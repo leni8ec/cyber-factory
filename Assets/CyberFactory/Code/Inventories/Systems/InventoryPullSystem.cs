@@ -1,53 +1,60 @@
 ﻿using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
+using CyberFactory.Inventories.Requests;
 using CyberFactory.Products.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
 
 namespace CyberFactory.Inventories.Systems {
-
+    /// <summary>
+    /// Pull items to the inventory
+    /// note: Order [Last]
+    /// </summary>
     [CreateAssetMenu(fileName = nameof(InventoryPullSystem), menuName = "Systems/Inventory Pull")]
     public class InventoryPullSystem : UpdateSystem {
 
         private Filter pullItems;
-        private Filter inventoryFilter;
+        private Filter inventories;
 
         public override void OnAwake() {
-            pullItems = World.Filter.With<PullToInventory>().Build();
-            inventoryFilter = World.Filter.With<Inventory>().Build();
+            pullItems = World.Filter.With<InventoryItemPullRequest>().Build();
+            inventories = World.Filter.With<Inventory>().Build();
         }
 
         public override void OnUpdate(float deltaTime) {
-            var service = inventoryFilter.FirstOrDefault().GetComponent<Inventory>().service;
+            var service = inventories.FirstOrDefault().GetComponent<Inventory>().service;
 
-            foreach (var pullItem in pullItems) {
-                pullItem.RemoveComponent<PullToInventory>();
-                var pullProduct = pullItem.GetComponent<Product>();
+            foreach (var pullItemEntity in pullItems) {
+                var pullProduct = pullItemEntity.GetComponent<Product>();
 
-                bool stackable = pullItem.Has<Count>();
                 bool itemExists = service.Has(pullProduct);
-                if (stackable && itemExists) { // Add item count - if product exists and stackable
+                var pullCount = pullItemEntity.GetComponent<Count>(out bool stackable);
 
-                    long pullCount = pullItem.GetComponent<Count>().value;
-                    if (pullCount <= 0) Debug.LogError("The 'Count' must be > '0'");
+                if (stackable && pullCount <= 0) {
+                    Debug.LogError("[Inventory] Pull items 'Count' must be > '0'");
+                    Debug.LogWarning("[Inventory] Pull items 'Count' must be > '0'");
+                    World.RemoveEntity(pullItemEntity);
+                    continue;
+                }
 
-                    // add count
-                    var inventoryItem = service.Get(pullProduct);
-                    inventoryItem.GetComponent<Count>().value += pullCount;
+                if (itemExists && stackable) { // Add item count - if product exists and stackable
+                    var inventoryItemEntity = service.Get(pullProduct);
+                    ref var count = ref inventoryItemEntity.GetComponent<Count>();
 
-                    inventoryItem.AddComponent<Changes>();
-                    World.RemoveEntity(pullItem);
+                    count.Change(pullCount, out var changedCount); // add pull count
+                    inventoryItemEntity.AddComponent<ChangedCount>() = changedCount;
 
-                } else { // Add new entry to inventory - if product is not stackable or not exists in inventory before
+                    World.RemoveEntity(pullItemEntity); //  no need to remove 'InventoryItemPullRequest'
 
-                    if (stackable && pullItem.GetComponent<Count>().value <= 0) Debug.LogError("The 'Count' must be > '0'");
-                    pullItem.AddComponent<InventoryItem>();
+                } else { // Add new item to inventory - if product is not stackable or not exists in inventory before
+
+                    pullItemEntity.RemoveComponent<InventoryItemPullRequest>();
+                    pullItemEntity.AddComponent<InventoryItem>();
                 }
 
             }
         }
 
     }
-
 }

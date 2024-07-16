@@ -5,8 +5,7 @@ using Scellecs.Morpeh.Systems;
 using UnityEngine;
 
 namespace CyberFactory.Plants.Systems {
-
-    [CreateAssetMenu(fileName = nameof(PlantProductionSystem), menuName = "Systems/Plant Production")]
+    [CreateAssetMenu(menuName = "Systems/Plant Production", fileName = nameof(PlantProductionSystem))]
     public class PlantProductionSystem : UpdateSystem {
 
         private Filter filter;
@@ -18,7 +17,7 @@ namespace CyberFactory.Plants.Systems {
         public override void OnUpdate(float deltaTime) {
             foreach (var entity in filter) {
                 ref var progress = ref entity.GetComponent<Progress>();
-                var plant = entity.GetComponent<Plant>().plant;
+                var plant = entity.GetComponent<Plant>().model;
 
                 float delta = deltaTime * plant.productionRateLevels[0];
                 progress.value += delta;
@@ -33,5 +32,4 @@ namespace CyberFactory.Plants.Systems {
         }
 
     }
-
 }

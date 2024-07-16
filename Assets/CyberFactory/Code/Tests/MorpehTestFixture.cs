@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 using Scellecs.Morpeh;
+using Scellecs.Morpeh.Systems;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -50,11 +51,16 @@ namespace CyberFactory.Tests {
             yield return null;
         }
 
+        /// Called before [SetUp] from derived class
         protected abstract void InitSystems(SystemsGroup systemsGroup);
 
         protected void AddSystem<T>() where T : ScriptableObject, ISystem {
             var systemInstance = ScriptableObject.CreateInstance<T>();
             testSystems.AddSystem(systemInstance);
+        }
+
+        protected void AddInitializerSystem<T>() where T : Initializer {
+            ScriptableObject.CreateInstance<T>();
         }
 
         protected void RegisterAdditionalSystems(ISystem[] systems) {
@@ -65,6 +71,13 @@ namespace CyberFactory.Tests {
 
             testWorld.AddSystemsGroup(1, systemsGroup);
             testWorld.Update(0f);
+        }
+
+        /// Run all systems multiple times (default: 5) for 1 second each
+        protected void RunAllSystemsMultipleTimes(int repeat = 5) {
+            for (int i = 0; i < repeat; i++) {
+                RunAllSystems(1);
+            }
         }
 
         protected void RunAllSystems(float dt, int repeat) {

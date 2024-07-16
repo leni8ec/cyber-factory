@@ -9,13 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a97b3f3e87b4ecfa750caa4bd8c0a9a, type: 3}
-  m_Name: Metal
+  m_Script: {fileID: 11500000, guid: 1c9332c62cb143e993e436e5f5bdbc65, type: 3}
+  m_Name: InventorySystem
   m_EditorClassIdentifier: 
-  price: 20
-  recipe:
-    products:
-    - key: {fileID: 0}
-      value: 0
-    - key: {fileID: 0}
-      value: 0

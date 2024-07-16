@@ -1,5 +1,5 @@
 using CyberFactory.Common.Components;
-using CyberFactory.Inventories.Components;
+using CyberFactory.Inventories.Requests;
 using CyberFactory.Plants.Components;
 using CyberFactory.Products.Components;
 using Scellecs.Morpeh;
@@ -7,8 +7,7 @@ using Scellecs.Morpeh.Systems;
 using UnityEngine;
 
 namespace CyberFactory.Plants.Systems {
-
-    [CreateAssetMenu(fileName = nameof(PlantProductionCompleteSystem), menuName = "Systems/Plant Production Complete")]
+    [CreateAssetMenu(menuName = "Systems/Plant Production Complete", fileName = nameof(PlantProductionCompleteSystem))]
     public class PlantProductionCompleteSystem : UpdateSystem {
 
         private Filter filter;
@@ -19,17 +18,16 @@ namespace CyberFactory.Plants.Systems {
 
         public override void OnUpdate(float deltaTime) {
             foreach (var entity in filter) {
-                var plant = entity.GetComponent<Plant>().plant;
+                var plant = entity.GetComponent<Plant>().model;
 
                 entity.RemoveComponent<ProductionComplete>();
 
                 var productEntity = World.CreateEntity();
-                productEntity.AddComponent<Product>().product = plant.product;
+                productEntity.AddComponent<Product>().model = plant.product;
                 productEntity.AddComponent<Count>().value = 1;
-                productEntity.AddComponent<PullToInventory>();
+                productEntity.AddComponent<InventoryItemPullRequest>();
             }
         }
 
     }
-
 }

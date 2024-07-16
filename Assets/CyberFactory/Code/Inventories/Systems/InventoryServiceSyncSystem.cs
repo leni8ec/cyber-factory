@@ -1,0 +1,126 @@
+using System;
+using CyberFactory.Common.Components;
+using CyberFactory.Inventories.Components;
+using CyberFactory.Inventories.Events;
+using CyberFactory.Inventories.Services;
+using CyberFactory.Products.Components;
+using CyberFactory.Products.Models;
+using Scellecs.Morpeh;
+using Scellecs.Morpeh.Systems;
+using UnityEngine;
+
+namespace CyberFactory.Inventories.Systems {
+
+    /// <summary>
+    /// Create inventory service and sync it with inventory entities ('InventoryItem')
+    /// <para/> Must be last in inventory systems
+    /// </summary>
+    [CreateAssetMenu(menuName = "Systems/Inventory Service Sync", fileName = nameof(InventoryServiceSyncSystem))]
+    public class InventoryServiceSyncSystem : UpdateSystem {
+
+        private InventoryService service;
+
+        private Filter itemsChangedCountFilter;
+        private SystemStateProcessor<InventorySynchronizedState> inventoryStateProcessor;
+
+        public override void OnAwake() {
+            service = new InventoryService();
+
+            ref var inventoryComponent = ref World.CreateEntity().AddComponent<Inventory>();
+            inventoryComponent.service = service;
+
+            itemsChangedCountFilter = World.Filter.With<Product>().With<InventoryItem>().With<ChangedCount>().Build();
+            inventoryStateProcessor = World.Filter.With<Product>().With<InventoryItem>().ToSystemStateProcessor(AddedToInventory, RemovedFromInventory);
+
+            // Debug log
+            World.GetEvent<InventoryItemChangedCountEvent>().Subscribe(events => {
+                foreach (var itemChangedEvent in events)
+                    Debug.Log($"[Inventory] Changed Event: {itemChangedEvent.product.name} ({itemChangedEvent.newCount})");
+            });
+        }
+
+        public override void OnUpdate(float deltaTime) {
+            inventoryStateProcessor.Process();
+
+            bool toCommit = false;
+            foreach (var entity in itemsChangedCountFilter) {
+
+                var changedCount = entity.GetComponent<ChangedCount>();
+                entity.RemoveComponent<ChangedCount>();
+
+                var product = entity.GetComponent<Product>();
+                OnItemCountChanged(product, changedCount.oldValue, changedCount.newValue);
+
+                // check to remove item if count is '0'
+                if (changedCount.newValue <= 0) {
+                    World.RemoveEntity(entity);
+                    toCommit = true;
+
+                    if (changedCount.newValue < 0) Debug.LogError($"[Inventory] remaining item count must be > 0! (Counts - old: [{changedCount.oldValue}] new [{changedCount.newValue})");
+                }
+            }
+            if (toCommit) World.Commit();
+        }
+
+
+        private InventorySynchronizedState AddedToInventory(Entity entity) {
+            var product = entity.GetComponent<Product>();
+            bool hasAdded = service.Add(product, entity);
+            if (!hasAdded) Debug.LogError("[Inventory] service sync issue - added item is already exists");
+
+            OnItemAdded(product.model);
+
+            return new InventorySynchronizedState { product = product };
+        }
+
+        private void RemovedFromInventory(ref InventorySynchronizedState state) {
+            bool hasRemoved = service.Remove(state.product);
+            if (!hasRemoved) Debug.LogError("[Inventory] service sync issue - remove item isn't exists");
+
+            OnItemRemoved(state.product.model);
+        }
+
+
+        private void OnItemAdded(ProductModel product) {
+            Debug.Log($"[Inventory] Added: {product.name}");
+
+            World.GetEvent<InventoryItemCreatedEvent>().NextFrame(
+                new InventoryItemCreatedEvent { product = product });
+
+            // Inventory refill event
+            World.GetEvent<InventoryItemRefillEvent>().NextFrame(
+                new InventoryItemRefillEvent { product = product, count = 1 });
+        }
+
+        private void OnItemRemoved(ProductModel product) {
+            Debug.Log($"[Inventory] Removed: {product.name}");
+            World.GetEvent<InventoryItemRemovedEvent>().NextFrame(
+                new InventoryItemRemovedEvent {
+                    product = product
+                });
+        }
+
+        private void OnItemCountChanged(Product product, int oldCount, int newCount) {
+            Debug.Log($"[Inventory] Count changed: {product.model.name} ({oldCount} -> {newCount})");
+            World.GetEvent<InventoryItemChangedCountEvent>().NextFrame(
+                new InventoryItemChangedCountEvent {
+                    product = product.model,
+                    oldCount = oldCount,
+                    newCount = newCount
+                });
+
+            // Inventory refill event
+            if (newCount > oldCount) {
+                World.GetEvent<InventoryItemRefillEvent>().NextFrame(
+                    new InventoryItemRefillEvent { product = product.model, count = newCount });
+            }
+        }
+
+    }
+
+    [Serializable]
+    public struct InventorySynchronizedState : ISystemStateComponent {
+        public Product product;
+    }
+
+}

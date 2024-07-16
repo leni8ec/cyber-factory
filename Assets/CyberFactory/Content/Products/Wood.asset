@@ -13,4 +13,12 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: 
   price: 2
-  recipe: []
+  stackable: 1
+  recipe:
+    products:
+    - key: {fileID: 11400000, guid: c5961eaa3fc110b4ea485f2e798e4833, type: 2}
+      value: 0
+    - key: {fileID: 11400000, guid: 2f59a81c40e817c439b69fca03b33a19, type: 2}
+      value: 0
+    - key: {fileID: 11400000, guid: 2f59a81c40e817c439b69fca03b33a19, type: 2}
+      value: 2
