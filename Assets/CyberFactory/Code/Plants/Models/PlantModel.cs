@@ -12,7 +12,8 @@ namespace CyberFactory.Plants.Models {
 
         [PropertySpace] [ListDrawerSettings(ShowElementLabels = true)]
         [InfoBox("Production rate (in pcs per second) \n\nDepends on the current station level")]
-        public List<float> productionRateLevels = new() { 1 };
+        // note: initial value - used for testing purposes and editor initial values
+        public List<float> productionRateLevels = new() { 1, 2, 3 };
 
     }
 }

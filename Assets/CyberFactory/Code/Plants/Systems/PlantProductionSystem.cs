@@ -17,9 +17,9 @@ namespace CyberFactory.Plants.Systems {
         public override void OnUpdate(float deltaTime) {
             foreach (var entity in filter) {
                 ref var progress = ref entity.GetComponent<Progress>();
-                var plant = entity.GetComponent<Plant>().model;
+                var plant = entity.GetComponent<Plant>();
 
-                float delta = deltaTime * plant.productionRateLevels[0];
+                float delta = deltaTime * plant.ProductionRate;
                 progress.value += delta;
 
                 if (progress.IsComplete) {

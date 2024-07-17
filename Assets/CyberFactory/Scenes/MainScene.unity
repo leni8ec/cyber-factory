@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 6938591}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -166,6 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     model: {fileID: 11400000, guid: ea0eb81a666aeae41b126fa42d763817, type: 2}
+    level: 1
 --- !u!114 &6938594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 138980149}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -237,6 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     model: {fileID: 11400000, guid: 84cd2d29bbdef8240950a680a141fdea, type: 2}
+    level: 1
 --- !u!114 &138980152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +276,7 @@ Transform:
   m_GameObject: {fileID: 994800322}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6167965, y: 0.20582998, z: 0.021411052}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -313,7 +315,7 @@ Transform:
   m_GameObject: {fileID: 1042778134}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.5, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -333,6 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     model: {fileID: 11400000, guid: 038f96176d9212743ac05ab8e362d06c, type: 2}
+    level: 1
 --- !u!114 &1042778137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,6 +381,8 @@ MonoBehaviour:
   initializers: []
   updateSystems:
   - enabled: 1
+    system: {fileID: 11400000, guid: 3c6bfbd0204d0204eb7a2519149f8529, type: 2}
+  - enabled: 1
     system: {fileID: 11400000, guid: 3202e9a1491db6b45afaac2837f6bff0, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: 1049230eef972794cb1b6e6d979539cb, type: 2}
@@ -405,7 +410,7 @@ Transform:
   m_GameObject: {fileID: 1116342796}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6167965, y: 0.20582998, z: 0.021411052}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -439,7 +444,7 @@ Transform:
   m_GameObject: {fileID: 1381074427}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -471,6 +476,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     model: {fileID: 11400000, guid: 3372077aa3196c940b2adec85007e0d9, type: 2}
+    level: 1
 --- !u!114 &1381074435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,7 +516,7 @@ Transform:
   m_GameObject: {fileID: 1439979659}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -530,6 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     model: {fileID: 11400000, guid: 2538a52521b764548be9398ec720722e, type: 2}
+    level: 1
 --- !u!114 &1439979662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,7 +577,7 @@ Transform:
   m_GameObject: {fileID: 1728003439}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -590,6 +597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     model: {fileID: 11400000, guid: 9b5d5e3c7b3252b44ad6714289532200, type: 2}
+    level: 1
 --- !u!114 &1728003442
 MonoBehaviour:
   m_ObjectHideFlags: 0

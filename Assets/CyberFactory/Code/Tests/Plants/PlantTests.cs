@@ -25,6 +25,7 @@ namespace CyberFactory.Tests.Plants {
         private Entity[] plants;
 
         protected override void InitSystems(SystemsGroup systemsGroup) {
+            // AddSystem<PlantInitializerSystem>(); - not required for test (plant level is set manual)
             AddSystem<PlantResourceRequestSystem>();
             AddSystem<PlantProductionStartSystem>();
             AddSystem<PlantProductionSystem>();
@@ -56,7 +57,9 @@ namespace CyberFactory.Tests.Plants {
                 plantModel.product = products[i];
                 // create plant entity
                 var plantEntity = testWorld.CreateEntity();
-                plantEntity.AddComponent<Plant>().model = plantModel;
+                ref var plant = ref plantEntity.AddComponent<Plant>();
+                plant.model = plantModel;
+                plant.level = 1;
                 plants[i] = plantEntity;
             }
             // inventory service
