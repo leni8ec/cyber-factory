@@ -86,7 +86,12 @@ namespace CyberFactory.Inventories.Services {
 
 
         public int Count(ProductModel product) {
-            return Get(product).GetComponent<Count>().value;
+            // return Get(product).GetComponent<Count>().value; // old realization
+
+            var productEntity = TryGet(product, out bool exists);
+            if (!exists) return 0;
+            if (!product.stackable) return 1;
+            return productEntity.GetComponent<Count>().value;
         }
 
 
