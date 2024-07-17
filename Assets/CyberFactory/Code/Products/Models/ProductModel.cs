@@ -3,9 +3,7 @@ using TriInspector;
 using UnityEngine;
 
 namespace CyberFactory.Products.Models {
-
-    [HideMonoScript]
-    [CreateAssetMenu(fileName = "Product", menuName = "Stuff/Product", order = 0)]
+    [CreateAssetMenu(fileName = "Product", menuName = "Stuff/Product", order = 0)] [HideMonoScript]
     public class ProductModel : ScriptableObject {
 
         [PropertySpace]
@@ -23,5 +21,4 @@ namespace CyberFactory.Products.Models {
         public bool HasRecipe => recipe.Count == 0;
 
     }
-
 }

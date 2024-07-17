@@ -4,17 +4,15 @@ using TriInspector;
 using UnityEngine;
 
 namespace CyberFactory.Plants.Models {
-
-    [HideMonoScript]
-    [CreateAssetMenu(fileName = "Plant", menuName = "Stuff/Plant", order = 0)]
+    [CreateAssetMenu(fileName = "Plant", menuName = "Stuff/Plant", order = 0)] [HideMonoScript]
     public class PlantModel : ScriptableObject {
 
         [PropertySpace]
         public ProductModel product;
 
         [PropertySpace] [ListDrawerSettings(ShowElementLabels = true)]
-        [Tooltip("Production rate (in pcs per second) \n\nDepends on the current station level")]
+        [InfoBox("Production rate (in pcs per second) \n\nDepends on the current station level")]
         public List<float> productionRateLevels = new() { 1 };
-    }
 
+    }
 }
