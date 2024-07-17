@@ -1,3 +1,4 @@
+using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Requests;
 using CyberFactory.Plants.Components;
 using Scellecs.Morpeh;
@@ -14,7 +15,10 @@ namespace CyberFactory.Plants.Systems {
         private Filter requestsPlants;
 
         public override void OnAwake() {
-            requestsPlants = World.Filter.With<Plant>().Without<ActiveState>().Without<InventoryProductsRequest>().Build();
+            requestsPlants = World.Filter
+                .With<Plant>().With<ActiveState>()
+                .Without<Progress>().Without<InventoryProductsRequest>()
+                .Build();
         }
 
         public override void OnUpdate(float deltaTime) {

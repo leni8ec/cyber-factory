@@ -15,6 +15,12 @@ namespace CyberFactory.Common.Components {
             else if (value > 1) value = 1;
         }
 
+        public override string ToString() {
+            return $"{value:F}";
+        }
+
+        public static implicit operator float(Progress progress) => progress.value;
+    
     }
 
 }

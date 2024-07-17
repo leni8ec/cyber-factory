@@ -13,6 +13,7 @@ namespace CyberFactory.Inventories.Systems {
 
     /// <summary>
     /// Create inventory service and sync it with inventory entities ('InventoryItem')
+    /// note: Order - [Last] in inventories
     /// <para/> Must be last in inventory systems
     /// </summary>
     [CreateAssetMenu(menuName = "Systems/Inventory Service Sync", fileName = nameof(InventoryServiceSyncSystem))]
@@ -56,7 +57,7 @@ namespace CyberFactory.Inventories.Systems {
                     World.RemoveEntity(entity);
                     toCommit = true;
 
-                    if (changedCount.newValue < 0) Debug.LogError($"[Inventory] remaining item count must be > 0! (Counts - old: [{changedCount.oldValue}] new [{changedCount.newValue})");
+                    if (changedCount.newValue < 0) Debug.LogWarning($"[Inventory] remaining item count must be > 0! (Counts - old: [{changedCount.oldValue}] new [{changedCount.newValue})");
                 }
             }
             if (toCommit) World.Commit();
@@ -66,23 +67,27 @@ namespace CyberFactory.Inventories.Systems {
         private InventorySynchronizedState AddedToInventory(Entity entity) {
             var product = entity.GetComponent<Product>();
             bool hasAdded = service.Add(product, entity);
-            if (!hasAdded) Debug.LogError("[Inventory] service sync issue - added item is already exists");
+            if (!hasAdded) {
+                Debug.LogWarning("[Inventory] service sync issue - added item is already exists");
+                return default;
+            }
 
-            OnItemAdded(product.model);
+            int count = product.model.stackable ? service.Count(product.model) : 1;
+            OnItemAdded(product.model, count);
 
             return new InventorySynchronizedState { product = product };
         }
 
         private void RemovedFromInventory(ref InventorySynchronizedState state) {
             bool hasRemoved = service.Remove(state.product);
-            if (!hasRemoved) Debug.LogError("[Inventory] service sync issue - remove item isn't exists");
+            if (!hasRemoved) Debug.LogWarning("[Inventory] service sync issue - remove item isn't exists");
 
             OnItemRemoved(state.product.model);
         }
 
 
-        private void OnItemAdded(ProductModel product) {
-            Debug.Log($"[Inventory] Added: {product.name}");
+        private void OnItemAdded(ProductModel product, int count) {
+            Debug.Log($"[Inventory] Added: {product.name} (count: {count})");
 
             World.GetEvent<InventoryItemCreatedEvent>().NextFrame(
                 new InventoryItemCreatedEvent { product = product });

@@ -11,8 +11,8 @@ namespace CyberFactory.Inventories.Requests {
 
         public ProductsSet products;
 
-        
-        public bool IsEmpty => products is null;
+
+        public bool IsEmpty => products is null || products.IsEmpty;
 
     }
 }

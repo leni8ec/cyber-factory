@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: Metal
   m_EditorClassIdentifier: 
   price: 20
+  stackable: 1
   recipe:
-    products:
-    - key: {fileID: 0}
-      value: 0
-    - key: {fileID: 0}
-      value: 0
+    products: []

@@ -29,19 +29,25 @@ namespace CyberFactory.Inventories.Services {
         }
 
         public bool Has(ProductsSet productsSet) {
+            if (productsSet.IsEmpty) {
+                Debug.LogWarning("[Inventory] Checked 'ProductSet' is empty!");
+                return true;
+            }
             foreach ((var product, int count) in productsSet) {
-                // Check for product count is valid (must be first for check validity of the request)
-                bool productCountIsValid = product.stackable && count > 0;
-                if (!productCountIsValid) {
-                    Debug.LogError("[Inventory] request product count must be > 0");
-                    return false;
+                switch (count) {
+                    case < 0: // Check for product count request is valid (must be first for check validity of the request)
+                        Debug.LogWarning($"[Inventory] Request: product count must be >= 0 ({product.name}: {count})");
+                        return false; // request requirement is not valid
+                    case 0: // Check for product count request is empty - skip check for this
+                        // Debug.LogWarning($"[Inventory] Request: product count is 0 ({product.name})");
+                        continue; // request item requirement is empty
                 }
 
                 if (!items.TryGetValue(product, out var itemEntity)) return false; //       if product exists
                 var itemCount = itemEntity.GetComponent<Count>(out bool itemCountExists);
                 if (product.stackable) { //                                                 if stackable 
                     if (!itemCountExists) { //                                                  - if inventory has not 'count' component
-                        Debug.LogError("[Inventory] item - component 'count' is missing");
+                        Debug.LogWarning("[Inventory] item - component 'count' is missing");
                         return false;
                     }
                     if (itemCount.value < count) { //                                           - if inventory count is enough

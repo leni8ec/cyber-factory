@@ -9,7 +9,7 @@ using UnityEngine;
 namespace CyberFactory.Inventories.Systems {
     /// <summary>
     /// Pull items to the inventory
-    /// note: Order [Last]
+    /// note: Order [Last] but before [InventoryServiceSyncSystem]
     /// </summary>
     [CreateAssetMenu(fileName = nameof(InventoryPullSystem), menuName = "Systems/Inventory Pull")]
     public class InventoryPullSystem : UpdateSystem {
@@ -32,7 +32,6 @@ namespace CyberFactory.Inventories.Systems {
                 var pullCount = pullItemEntity.GetComponent<Count>(out bool stackable);
 
                 if (stackable && pullCount <= 0) {
-                    Debug.LogError("[Inventory] Pull items 'Count' must be > '0'");
                     Debug.LogWarning("[Inventory] Pull items 'Count' must be > '0'");
                     World.RemoveEntity(pullItemEntity);
                     continue;

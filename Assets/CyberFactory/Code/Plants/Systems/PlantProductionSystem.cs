@@ -11,7 +11,7 @@ namespace CyberFactory.Plants.Systems {
         private Filter filter;
 
         public override void OnAwake() {
-            filter = World.Filter.With<Plant>().With<Progress>().With<ActiveState>().Build();
+            filter = World.Filter.With<Plant>().With<ActiveState>().With<Progress>().Build();
         }
 
         public override void OnUpdate(float deltaTime) {
@@ -24,7 +24,6 @@ namespace CyberFactory.Plants.Systems {
 
                 if (progress.IsComplete) {
                     entity.RemoveComponent<Progress>();
-                    entity.RemoveComponent<ActiveState>();
                     entity.AddComponent<ProductionComplete>();
                 }
 

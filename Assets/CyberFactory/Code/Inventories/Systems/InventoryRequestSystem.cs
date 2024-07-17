@@ -25,9 +25,13 @@ namespace CyberFactory.Inventories.Systems {
         public override void OnAwake() {
             inventories = World.Filter.With<Inventory>().Build();
             newRequests = World.Filter
-                .With<InventoryProductsRequest>().Without<RequestApprovedState>().Without<InventoryWaitForRefill>().Build();
+                .With<ActiveState>().With<InventoryProductsRequest>()
+                .Without<RequestApprovedState>().Without<InventoryWaitForRefill>()
+                .Build();
             waitForRefillRequests = World.Filter
-                .With<InventoryProductsRequest>().Without<RequestApprovedState>().With<InventoryWaitForRefill>().Build();
+                .With<ActiveState>().With<InventoryProductsRequest>().With<InventoryWaitForRefill>()
+                .Without<RequestApprovedState>()
+                .Build();
 
             refillEvent = World.GetEvent<InventoryItemRefillEvent>();
             refillEvent.Subscribe(OnInventoryRefilled);
@@ -60,7 +64,6 @@ namespace CyberFactory.Inventories.Systems {
                 // Approve request
                 if (isWaitingRequests) requestEntity.RemoveComponent<InventoryWaitForRefill>();
                 ApproveRequest(service, requestEntity, request);
-                break; // approve only one release request in one frame (to update 'InventoryService')
             }
         }
 
@@ -69,9 +72,14 @@ namespace CyberFactory.Inventories.Systems {
             requestEntity.AddComponent<RequestApprovedState>();
 
             // Remove requests entities from inventory
+            if (request.IsEmpty) return;
             foreach ((var product, int count) in request.products) {
-                var inventoryItemEntity = service.Get(product);
+                if (count <= 0) {
+                    Debug.LogWarning($"[Inventory] Request: count is {count} ({product.name})");
+                    continue; // skip if request item count is empty
+                }
 
+                var inventoryItemEntity = service.Get(product);
                 if (!product.stackable) {
                     World.RemoveEntity(inventoryItemEntity);
                 } else {

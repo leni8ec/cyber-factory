@@ -1,4 +1,5 @@
 ﻿using CyberFactory.Common.Components;
+using CyberFactory.Inventories.Requests;
 using CyberFactory.Plants.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
@@ -14,14 +15,17 @@ namespace CyberFactory.Plants.Systems {
         private Filter readyPlants;
 
         public override void OnAwake() {
-            readyPlants = World.Filter.With<Plant>().Without<Progress>().Without<ActiveState>().With<RequestApprovedState>().Build();
+            readyPlants = World.Filter
+                .With<Plant>().With<ActiveState>().With<InventoryProductsRequest>().With<RequestApprovedState>()
+                .Without<Progress>()
+                .Build();
         }
 
         public override void OnUpdate(float deltaTime) {
             // Start Production
             foreach (var readyPlant in readyPlants) {
+                readyPlant.RemoveComponent<InventoryProductsRequest>();
                 readyPlant.RemoveComponent<RequestApprovedState>();
-                readyPlant.AddComponent<ActiveState>();
                 readyPlant.AddComponent<Progress>();
             }
         }
