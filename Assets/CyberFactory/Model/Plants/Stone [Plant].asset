@@ -9,6 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89a69a1a46bc429699d4e17b777d1b98, type: 3}
-  m_Name: InventoryRequestSystem
+  m_Script: {fileID: 11500000, guid: 7dfd765202b248d5b34cefee12c1e95c, type: 3}
+  m_Name: 'Stone [Plant]'
   m_EditorClassIdentifier: 
+  product: {fileID: 11400000, guid: 2f59a81c40e817c439b69fca03b33a19, type: 2}
+  productionRateLevels:
+  - 1
+  - 2
+  - 3

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dfd765202b248d5b34cefee12c1e95c, type: 3}
-  m_Name: StonePlant
+  m_Name: 'Hammer [Plant]'
   m_EditorClassIdentifier: 
-  product: {fileID: 11400000, guid: 2f59a81c40e817c439b69fca03b33a19, type: 2}
+  product: {fileID: 11400000, guid: 88ff647430d6b4f47928d277f1fe02e3, type: 2}
   productionRateLevels:
+  - 0.5
   - 1
   - 2
-  - 3

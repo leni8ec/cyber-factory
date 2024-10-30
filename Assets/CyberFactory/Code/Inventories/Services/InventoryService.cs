@@ -97,11 +97,13 @@ namespace CyberFactory.Inventories.Services {
 
         #region Sync
 
-        public bool Add(Product product, Entity entity) {
+        /// Try to synchronize inventory when adding a new entity
+        public bool TrySyncOnAdd(Product product, Entity entity) {
             return items.TryAdd(product.model, entity);
         }
 
-        public bool Remove(Product product) {
+        /// Try to synchronize inventory when entity has been removed
+        public bool TrySyncOnRemove(Product product) {
             return items.Remove(product.model);
         }
 

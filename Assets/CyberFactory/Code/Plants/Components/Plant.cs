@@ -16,6 +16,7 @@ namespace CyberFactory.Plants.Components {
 
         [ShowInInspector] [ReadOnly] [PropertyOrder(3)]
         private int MaxLevel => model ? model.productionRateLevels.Count : 0;
+
         [ShowInInspector] [ReadOnly] [PropertyOrder(2)]
         private int ValidLevel {
             get {

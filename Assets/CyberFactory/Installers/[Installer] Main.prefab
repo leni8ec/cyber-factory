@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5344957894866368515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2510341364360519661}
+  - component: {fileID: 393356813669607101}
+  m_Layer: 0
+  m_Name: '[Installer] Main'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2510341364360519661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5344957894866368515}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &393356813669607101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5344957894866368515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3e5db895821594790574b8473edacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  order: 0
+  initializers: []
+  updateSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: 3c6bfbd0204d0204eb7a2519149f8529, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 3202e9a1491db6b45afaac2837f6bff0, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 1049230eef972794cb1b6e6d979539cb, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: ea6feaddc28c1d040bfe08070a248dc7, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 53ece0391021df644b59496568b41002, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: f9352f9c81400b144a7ef8c8e48401be, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: ca360a2cb04a5c24e8af0861b4df276d, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 50c2bff53160fc5498602b07df1b47a6, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 921516a845b8b3547abf716cf41361fa, type: 2}
+  fixedUpdateSystems: []
+  lateUpdateSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: 2ee5df94b15fe1642a6691bcc5f414ee, type: 2}
+  cleanupSystems: []

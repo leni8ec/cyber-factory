@@ -9,11 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dfd765202b248d5b34cefee12c1e95c, type: 3}
-  m_Name: HammerFactory
+  m_Script: {fileID: 11500000, guid: 235f25628acd443bb8f4044a7926b08d, type: 3}
+  m_Name: 'Plant ResourceRequest [System]'
   m_EditorClassIdentifier: 
-  product: {fileID: 11400000, guid: 88ff647430d6b4f47928d277f1fe02e3, type: 2}
-  productionRateLevels:
-  - 0.5
-  - 1
-  - 2

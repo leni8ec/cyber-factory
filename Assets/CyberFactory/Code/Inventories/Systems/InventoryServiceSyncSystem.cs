@@ -36,7 +36,7 @@ namespace CyberFactory.Inventories.Systems {
             // Debug log
             World.GetEvent<InventoryItemChangedCountEvent>().Subscribe(events => {
                 foreach (var itemChangedEvent in events)
-                    Debug.Log($"[Inventory] Changed Event: {itemChangedEvent.product.name} ({itemChangedEvent.newCount})");
+                    Debug.Log($"[Inventory] Count changed Event: {{ {itemChangedEvent.product.name}: '{itemChangedEvent.newCount}' }}");
             });
         }
 
@@ -66,9 +66,9 @@ namespace CyberFactory.Inventories.Systems {
 
         private InventorySynchronizedState AddedToInventory(Entity entity) {
             var product = entity.GetComponent<Product>();
-            bool hasAdded = service.Add(product, entity);
+            bool hasAdded = service.TrySyncOnAdd(product, entity);
             if (!hasAdded) {
-                Debug.LogWarning("[Inventory] service sync issue - added item is already exists");
+                Debug.LogWarning("[Inventory] service sync issue - added item is already exists (it's not stackable)");
                 return default;
             }
 
@@ -79,7 +79,7 @@ namespace CyberFactory.Inventories.Systems {
         }
 
         private void RemovedFromInventory(ref InventorySynchronizedState state) {
-            bool hasRemoved = service.Remove(state.product);
+            bool hasRemoved = service.TrySyncOnRemove(state.product);
             if (!hasRemoved) Debug.LogWarning("[Inventory] service sync issue - remove item isn't exists");
 
             OnItemRemoved(state.product.model);
@@ -106,7 +106,7 @@ namespace CyberFactory.Inventories.Systems {
         }
 
         private void OnItemCountChanged(Product product, int oldCount, int newCount) {
-            Debug.Log($"[Inventory] Count changed: {product.model.name} ({oldCount} -> {newCount})");
+            Debug.Log($"[Inventory] Count changed ({newCount - oldCount:+#;-#;0}): {{ {product.model.name}: '{newCount}' }}");
             World.GetEvent<InventoryItemChangedCountEvent>().NextFrame(
                 new InventoryItemChangedCountEvent {
                     product = product.model,
@@ -123,6 +123,7 @@ namespace CyberFactory.Inventories.Systems {
 
     }
 
+    // todo: what is it !?
     [Serializable]
     public struct InventorySynchronizedState : ISystemStateComponent {
         public Product product;
