@@ -15,7 +15,7 @@
       "hash": "322531044f5c332efa1bffa820968279005222d7"
     },
     "com.codewriter.triinspector": {
-      "version": "1.14.0",
+      "version": "1.14.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -24,7 +24,7 @@
       "url": "https://package.openupm.com"
     },
     "com.cysharp.unitask": {
-      "version": "2.5.5",
+      "version": "2.5.10",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -51,7 +51,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.31",
+      "version": "3.0.34",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -69,7 +69,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.8.2",
+      "version": "1.11.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -85,14 +85,14 @@
       "hash": "184244fa1721e8e5da6aff2aca29b92f0a1e5ec7"
     },
     "com.unity.mobile.android-logcat": {
-      "version": "1.4.2",
+      "version": "1.4.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.4.4",
+      "version": "1.4.5",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -112,7 +112,7 @@
       }
     },
     "jp.hadashikick.vcontainer": {
-      "version": "1.16.2",
+      "version": "1.16.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
