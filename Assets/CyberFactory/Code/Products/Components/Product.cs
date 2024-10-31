@@ -1,13 +1,14 @@
 using System;
-using CyberFactory.Products.Models;
+using CyberFactory.Products.Configs;
 using Scellecs.Morpeh;
+using UnityEngine.Serialization;
 
 namespace CyberFactory.Products.Components {
 
     [Serializable]
     public struct Product : IComponent {
 
-        public ProductModel model;
+        [FormerlySerializedAs("config")] public ProductConfig model;
 
         // public int count; moved to own component 'Count'
 

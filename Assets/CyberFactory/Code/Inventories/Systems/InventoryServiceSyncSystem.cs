@@ -4,7 +4,7 @@ using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Events;
 using CyberFactory.Inventories.Services;
 using CyberFactory.Products.Components;
-using CyberFactory.Products.Models;
+using CyberFactory.Products.Configs;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
@@ -86,7 +86,7 @@ namespace CyberFactory.Inventories.Systems {
         }
 
 
-        private void OnItemAdded(ProductModel product, int count) {
+        private void OnItemAdded(ProductConfig product, int count) {
             Debug.Log($"[Inventory] Added: {product.name} (count: {count})");
 
             World.GetEvent<InventoryItemCreatedEvent>().NextFrame(
@@ -97,7 +97,7 @@ namespace CyberFactory.Inventories.Systems {
                 new InventoryItemRefillEvent { product = product, count = 1 });
         }
 
-        private void OnItemRemoved(ProductModel product) {
+        private void OnItemRemoved(ProductConfig product) {
             Debug.Log($"[Inventory] Removed: {product.name}");
             World.GetEvent<InventoryItemRemovedEvent>().NextFrame(
                 new InventoryItemRemovedEvent {

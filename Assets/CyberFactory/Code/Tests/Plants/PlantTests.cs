@@ -7,10 +7,10 @@ using CyberFactory.Inventories.Requests;
 using CyberFactory.Inventories.Services;
 using CyberFactory.Inventories.Systems;
 using CyberFactory.Plants.Components;
-using CyberFactory.Plants.Models;
+using CyberFactory.Plants.Configs;
 using CyberFactory.Plants.Systems;
 using CyberFactory.Products.Components;
-using CyberFactory.Products.Models;
+using CyberFactory.Products.Configs;
 using CyberFactory.Products.Objects;
 using NUnit.Framework;
 using Scellecs.Morpeh;
@@ -21,7 +21,7 @@ namespace CyberFactory.Tests.Plants {
     public class PlantTests : MorpehTestFixture {
 
         private InventoryService inventory;
-        private ProductModel[] products;
+        private ProductConfig[] products;
         private Entity[] plants;
 
         protected override void InitSystems(SystemsGroup systemsGroup) {
@@ -40,9 +40,9 @@ namespace CyberFactory.Tests.Plants {
         [SetUp]
         public void SetUp() {
             // init products
-            products = new ProductModel[5];
+            products = new ProductConfig[5];
             for (int i = 0; i < products.Length; i++) {
-                var product = ScriptableObject.CreateInstance<ProductModel>();
+                var product = ScriptableObject.CreateInstance<ProductConfig>();
                 product.price = i + 1;
                 product.name = $"Product_{i}";
                 products[i] = product;
@@ -51,14 +51,14 @@ namespace CyberFactory.Tests.Plants {
             plants = new Entity[5];
             for (int i = 0; i < plants.Length; i++) {
                 // create plant model
-                var plantModel = ScriptableObject.CreateInstance<PlantModel>();
+                var plantModel = ScriptableObject.CreateInstance<PlantConfig>();
                 plantModel.name = $"Plant_{i}";
                 plantModel.productionRateLevels = new List<float> { 1 };
                 plantModel.product = products[i];
                 // create plant entity
                 var plantEntity = testWorld.CreateEntity();
                 ref var plant = ref plantEntity.AddComponent<Plant>();
-                plant.model = plantModel;
+                plant.config = plantModel;
                 plant.level = 1;
                 plants[i] = plantEntity;
             }
@@ -208,9 +208,9 @@ namespace CyberFactory.Tests.Plants {
             // Prepare recipe
             var productionProduct = products[4]; // products[0..3] - may be used as recipe items
             var productionPlant = plants[4];
-            var recipeProducts = new List<PairValue<ProductModel, int>>(requestProductsCounts.Length);
+            var recipeProducts = new List<PairValue<ProductConfig, int>>(requestProductsCounts.Length);
             for (int i = 0; i < requestProductsCounts.Length; i++) {
-                recipeProducts.Add(new PairValue<ProductModel, int>(products[i], requestProductsCounts[i]));
+                recipeProducts.Add(new PairValue<ProductConfig, int>(products[i], requestProductsCounts[i]));
             }
             productionProduct.recipe = new ProductsSet(recipeProducts);
 
@@ -279,7 +279,7 @@ namespace CyberFactory.Tests.Plants {
 
         #region Helpers
 
-        private Entity PullProductToInventory(ProductModel product, int count) {
+        private Entity PullProductToInventory(ProductConfig product, int count) {
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;

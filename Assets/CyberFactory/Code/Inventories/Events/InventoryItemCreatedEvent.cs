@@ -1,4 +1,4 @@
-using CyberFactory.Products.Models;
+using CyberFactory.Products.Configs;
 using Scellecs.Morpeh;
 
 namespace CyberFactory.Inventories.Events {
@@ -8,7 +8,7 @@ namespace CyberFactory.Inventories.Events {
     /// </summary>
     public struct InventoryItemCreatedEvent : IEventData {
 
-        public ProductModel product;
+        public ProductConfig product;
         public int count;
 
     }

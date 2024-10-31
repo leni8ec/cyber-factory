@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CyberFactory.Common.Components;
 using CyberFactory.Products.Components;
-using CyberFactory.Products.Models;
+using CyberFactory.Products.Configs;
 using CyberFactory.Products.Objects;
 using Scellecs.Morpeh;
 using UnityEngine;
@@ -10,8 +10,8 @@ namespace CyberFactory.Inventories.Services {
 
     // todo: there is no implemented solution for storing not stackable items
     public class InventoryService {
-        private readonly Dictionary<ProductModel, Entity> items = new();
-        public IReadOnlyDictionary<ProductModel, Entity> Items => items;
+        private readonly Dictionary<ProductConfig, Entity> items = new();
+        public IReadOnlyDictionary<ProductConfig, Entity> Items => items;
 
         public int ItemsCount => items.Count;
 
@@ -20,7 +20,7 @@ namespace CyberFactory.Inventories.Services {
             return Has(product.model);
         }
 
-        public bool Has(ProductModel product) {
+        public bool Has(ProductConfig product) {
             return items.ContainsKey(product);
         }
 
@@ -58,7 +58,7 @@ namespace CyberFactory.Inventories.Services {
             return true;
         }
 
-        public bool Has(ProductModel product, int count) {
+        public bool Has(ProductConfig product, int count) {
             if (!Has(product)) return false;
 
             int hasCount = Get(product).GetComponent<Count>().value;
@@ -70,7 +70,7 @@ namespace CyberFactory.Inventories.Services {
             return Get(product.model);
         }
 
-        public Entity Get(ProductModel product) {
+        public Entity Get(ProductConfig product) {
             return items[product];
         }
 
@@ -79,13 +79,13 @@ namespace CyberFactory.Inventories.Services {
             return TryGet(product.model, out exists);
         }
 
-        public Entity TryGet(ProductModel product, out bool exists) {
+        public Entity TryGet(ProductConfig product, out bool exists) {
             exists = items.TryGetValue(product, out var entity);
             return entity;
         }
 
 
-        public int Count(ProductModel product) {
+        public int Count(ProductConfig product) {
             // return Get(product).GetComponent<Count>().value; // old realization
 
             var productEntity = TryGet(product, out bool exists);

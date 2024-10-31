@@ -18,7 +18,7 @@ namespace CyberFactory.Plants.Systems {
 
         public override void OnUpdate(float deltaTime) {
             foreach (var entity in filter) {
-                var plant = entity.GetComponent<Plant>().model;
+                var plant = entity.GetComponent<Plant>().config;
 
                 entity.RemoveComponent<ProductionComplete>();
 
