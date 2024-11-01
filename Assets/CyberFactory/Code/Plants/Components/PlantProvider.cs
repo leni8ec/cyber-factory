@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CyberFactory.Plants.Components {
 
-    [AddComponentMenu("ECS/" + nameof(Plant))] [HideMonoScript]
+    [AddComponentMenu("Cyber Factory/Plants/" + nameof(Plant))] [HideMonoScript]
     public class PlantProvider : MonoProvider<Plant> { }
 
 }

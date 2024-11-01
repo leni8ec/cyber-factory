@@ -1,4 +1,5 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Requests;
 using CyberFactory.Plants.Components;
 using Scellecs.Morpeh;
@@ -9,7 +10,7 @@ namespace CyberFactory.Plants.Systems {
     /// <summary>
     /// Start production when resource request is approved
     /// </summary>
-    [CreateAssetMenu(menuName = "Systems/Plant Auto Start", fileName = nameof(PlantProductionStartSystem))]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.PLANTS + "Auto Start", fileName = nameof(PlantProductionStartSystem), order = AssetMenu.Systems.PLANTS_ORDER)]
     public sealed class PlantProductionStartSystem : UpdateSystem {
 
         private Filter readyPlants;

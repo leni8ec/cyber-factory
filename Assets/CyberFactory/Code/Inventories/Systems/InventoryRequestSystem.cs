@@ -1,4 +1,5 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Events;
 using CyberFactory.Inventories.Requests;
@@ -14,7 +15,7 @@ namespace CyberFactory.Inventories.Systems {
     /// Process requests to release items to other entities (ex: for fabrics)
     /// note: Order - [Second] (or [First] if without 'Release' system)
     /// </summary>
-    [CreateAssetMenu(menuName = "Systems/Inventory Request", fileName = nameof(InventoryRequestSystem))]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.INVENTORY + "Request", fileName = nameof(InventoryRequestSystem), order = AssetMenu.Systems.INVENTORY_ORDER)]
     public sealed class InventoryRequestSystem : UpdateSystem {
 
         private Filter inventories;

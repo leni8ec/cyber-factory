@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CyberFactory.Common.Providers {
 
-    [AddComponentMenu("ECS/" + nameof(ActiveState))] [HideMonoScript]
+    [AddComponentMenu("Cyber Factory/Common/" + nameof(ActiveState))] [HideMonoScript]
     public sealed class ActiveStateProvider : MonoProvider<ActiveState> { }
 
 }

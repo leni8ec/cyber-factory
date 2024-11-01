@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CyberFactory.Inventories.Components {
 
-    [AddComponentMenu("ECS/" + nameof(InventoryItem))] [HideMonoScript]
+    [AddComponentMenu("Cyber Factory/Inventory/" + nameof(InventoryItem))] [HideMonoScript]
     public sealed class InventoryItemProvider : MonoProvider<InventoryItem> { }
 
 }

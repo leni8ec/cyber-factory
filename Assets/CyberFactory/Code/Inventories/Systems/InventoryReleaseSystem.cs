@@ -1,4 +1,5 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Requests;
 using CyberFactory.Products.Components;
@@ -12,7 +13,7 @@ namespace CyberFactory.Inventories.Systems {
     /// note: Order - [First]
     /// note: not used yet (use 'InventoryRequestSystem' instead)
     /// </summary>
-    [CreateAssetMenu(fileName = nameof(InventoryReleaseSystem), menuName = "Systems/Inventory Release")]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.INVENTORY + "Release", fileName = nameof(InventoryReleaseSystem), order = AssetMenu.Systems.INVENTORY_ORDER)]
     public class InventoryReleaseSystem : UpdateSystem {
 
         private Filter releaseItems;

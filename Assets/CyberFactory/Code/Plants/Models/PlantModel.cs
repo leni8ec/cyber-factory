@@ -1,14 +1,15 @@
 using System.Collections.Generic;
-using CyberFactory.Products.Configs;
+using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Products.Models;
 using TriInspector;
 using UnityEngine;
 
-namespace CyberFactory.Plants.Configs {
-    [CreateAssetMenu(fileName = "Plant", menuName = "Stuff/Plant", order = 0)] [HideMonoScript]
-    public class PlantConfig : ScriptableObject {
+namespace CyberFactory.Plants.Models {
+    [CreateAssetMenu(menuName = AssetMenu.Models.PLANT, fileName = "Plant", order = AssetMenu.Models.PLANT_ORDER)] [HideMonoScript]
+    public class PlantModel : ScriptableObject {
 
         [PropertySpace]
-        public ProductConfig product;
+        public ProductModel product;
 
         [PropertySpace] [ListDrawerSettings(ShowElementLabels = true)]
         [InfoBox("Production rate (in pcs per second) \n\nDepends on the current station level")]

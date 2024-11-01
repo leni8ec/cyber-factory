@@ -1,4 +1,4 @@
-using CyberFactory.Products.Configs;
+using CyberFactory.Products.Models;
 using Scellecs.Morpeh;
 
 namespace CyberFactory.Inventories.Events {
@@ -7,7 +7,7 @@ namespace CyberFactory.Inventories.Events {
     /// </summary>
     public struct InventoryItemRemovedEvent : IEventData {
 
-        public ProductConfig product;
+        public ProductModel product;
 
     }
 }

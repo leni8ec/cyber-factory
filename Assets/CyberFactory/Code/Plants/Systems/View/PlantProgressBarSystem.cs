@@ -1,4 +1,5 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Plants.Components;
 using CyberFactory.Plants.Components.View;
 using Scellecs.Morpeh;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace CyberFactory.Plants.Systems.View {
 
-    [CreateAssetMenu(menuName = "Systems/Plant Progress Bars", fileName = nameof(PlantProgressBarSystem))]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.PLANTS + "Progress Bars", fileName = nameof(PlantProgressBarSystem), order = AssetMenu.Systems.PLANTS_ORDER)]
     public sealed class PlantProgressBarSystem : LateUpdateSystem {
 
         private Filter filter;

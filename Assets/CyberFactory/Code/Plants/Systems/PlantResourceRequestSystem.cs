@@ -1,3 +1,4 @@
+using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Requests;
 using CyberFactory.Plants.Components;
@@ -9,7 +10,7 @@ namespace CyberFactory.Plants.Systems {
     /// <summary>
     /// Auto resource request when plant is idle
     /// </summary>
-    [CreateAssetMenu(menuName = "Systems/Plant Resource Request", fileName = nameof(PlantResourceRequestSystem))]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.PLANTS + "Resource Request", fileName = nameof(PlantResourceRequestSystem), order = AssetMenu.Systems.PLANTS_ORDER)]
     public sealed class PlantResourceRequestSystem : UpdateSystem {
 
         private Filter requestsPlants;
@@ -23,7 +24,7 @@ namespace CyberFactory.Plants.Systems {
 
         public override void OnUpdate(float deltaTime) {
             foreach (var idlePlant in requestsPlants) {
-                var recipe = idlePlant.GetComponent<Plant>().config.product.recipe;
+                var recipe = idlePlant.GetComponent<Plant>().model.product.recipe;
 
                 ref var resourceRequest = ref idlePlant.AddComponent<InventoryProductsRequest>();
                 resourceRequest.products = recipe;

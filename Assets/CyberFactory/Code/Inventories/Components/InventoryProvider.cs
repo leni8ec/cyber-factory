@@ -1,5 +1,5 @@
 ﻿using System;
-using CyberFactory.Products.Configs;
+using CyberFactory.Products.Models;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Providers;
 
@@ -9,7 +9,7 @@ namespace CyberFactory.Inventories.Components {
 
     [Serializable]
     public struct InventoryEntry {
-        public ProductConfig product;
+        public ProductModel product;
         public Entity entity;
     }
 

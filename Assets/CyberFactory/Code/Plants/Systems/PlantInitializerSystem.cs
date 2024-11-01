@@ -1,11 +1,12 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Plants.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
 
 namespace CyberFactory.Plants.Systems {
-    [CreateAssetMenu(menuName = "Systems/Plant Initializer", fileName = nameof(PlantInitializerSystem))]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.PLANTS + "Initializer", fileName = nameof(PlantInitializerSystem), order = AssetMenu.Systems.PLANTS_ORDER)]
     public class PlantInitializerSystem : UpdateSystem {
 
         private Filter plantsToInit;

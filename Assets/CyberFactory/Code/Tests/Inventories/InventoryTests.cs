@@ -8,7 +8,7 @@ using CyberFactory.Inventories.Requests;
 using CyberFactory.Inventories.Services;
 using CyberFactory.Inventories.Systems;
 using CyberFactory.Products.Components;
-using CyberFactory.Products.Configs;
+using CyberFactory.Products.Models;
 using CyberFactory.Products.Objects;
 using NUnit.Framework;
 using Scellecs.Morpeh;
@@ -19,11 +19,11 @@ namespace CyberFactory.Tests.Inventories {
     public class InventoryTests : MorpehTestFixture {
 
         private Filter inventoryItems;
-        private ProductConfig[] products;
+        private ProductModel[] products;
         private InventoryService service;
 
         // ReSharper disable once GrammarMistakeInComment
-        private readonly Regex inventoryPrefixRegex = new("^.Inventory.*"); // has "[Inventory*"
+        private readonly Regex inventoryPrefixRegex = new("^.Inventory.*"); // match "[Inventory*"
 
         protected override void InitSystems(SystemsGroup systemsGroup) {
             AddSystem<InventoryServiceSyncSystem>();
@@ -32,9 +32,9 @@ namespace CyberFactory.Tests.Inventories {
         [SetUp]
         public void SetUp() {
             inventoryItems = testWorld.Filter.With<Product>().With<InventoryItem>().Build();
-            products = new ProductConfig[5];
+            products = new ProductModel[5];
             for (int i = 0; i < products.Length; i++) {
-                var product = ScriptableObject.CreateInstance<ProductConfig>();
+                var product = ScriptableObject.CreateInstance<ProductModel>();
                 product.price = i + 1;
                 product.name = $"Product_{i}";
                 products[i] = product;
@@ -240,7 +240,7 @@ namespace CyberFactory.Tests.Inventories {
         }
 
 
-        private Entity PullProductToInventory(ProductConfig product, int count) {
+        private Entity PullProductToInventory(ProductModel product, int count) {
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;
@@ -248,7 +248,7 @@ namespace CyberFactory.Tests.Inventories {
             return entity;
         }
 
-        private Entity ReleaseProductFromInventory(ProductConfig product, int count) {
+        private Entity ReleaseProductFromInventory(ProductModel product, int count) {
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;
@@ -257,14 +257,14 @@ namespace CyberFactory.Tests.Inventories {
         }
 
 
-        private Entity RequestProductFromInventory(ProductConfig product, int count) {
+        private Entity RequestProductFromInventory(ProductModel product, int count) {
             return RequestProductsFromInventory(new[] { product }, new[] { count });
         }
 
-        private Entity RequestProductsFromInventory(ProductConfig[] products, int[] counts) {
-            var requestRecipe = new List<PairValue<ProductConfig, int>>(counts.Length);
+        private Entity RequestProductsFromInventory(ProductModel[] products, int[] counts) {
+            var requestRecipe = new List<PairValue<ProductModel, int>>(counts.Length);
             for (int i = 0; i < counts.Length; i++) {
-                requestRecipe.Add(new PairValue<ProductConfig, int>(products[i], counts[i]));
+                requestRecipe.Add(new PairValue<ProductModel, int>(products[i], counts[i]));
             }
             var productSet = new ProductsSet(requestRecipe);
             return RequestProductSetFromInventory(productSet);

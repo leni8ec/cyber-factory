@@ -1,4 +1,5 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Requests;
 using CyberFactory.Products.Components;
@@ -11,7 +12,7 @@ namespace CyberFactory.Inventories.Systems {
     /// Pull items to the inventory
     /// note: Order [Last] but before [InventoryServiceSyncSystem]
     /// </summary>
-    [CreateAssetMenu(fileName = nameof(InventoryPullSystem), menuName = "Systems/Inventory Pull")]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.INVENTORY + "Pull", fileName = nameof(InventoryPullSystem), order = AssetMenu.Systems.INVENTORY_ORDER)]
     public class InventoryPullSystem : UpdateSystem {
 
         private Filter pullItems;

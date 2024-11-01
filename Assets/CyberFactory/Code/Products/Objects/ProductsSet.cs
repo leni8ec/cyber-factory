@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using CyberFactory.Basics.Objects;
-using CyberFactory.Products.Configs;
+using CyberFactory.Products.Models;
 using TriInspector;
 using UnityEngine;
 
@@ -12,19 +12,19 @@ namespace CyberFactory.Products.Objects {
     /// Set of { Product, count }
     /// </summary>
     [Serializable]
-    public class ProductsSet : IEnumerable<PairValue<ProductConfig, int>> {
+    public class ProductsSet : IEnumerable<PairValue<ProductModel, int>> {
 
         /// <summary>
         /// { Product, count }
         /// </summary>
         [SerializeField] [InlineProperty]
-        private List<PairValue<ProductConfig, int>> products;
+        private List<PairValue<ProductModel, int>> products;
 
         public int Count => products?.Count ?? 0;
         public bool IsEmpty => products == null || products.Count == 0;
 
-        public IEnumerator<PairValue<ProductConfig, int>> GetEnumerator() {
-            foreach (PairValue<ProductConfig, int> pairValue in products) yield return pairValue;
+        public IEnumerator<PairValue<ProductModel, int>> GetEnumerator() {
+            foreach (PairValue<ProductModel, int> pairValue in products) yield return pairValue;
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
@@ -32,7 +32,7 @@ namespace CyberFactory.Products.Objects {
         }
 
         // note: used for tests
-        public ProductsSet(List<PairValue<ProductConfig, int>> products) {
+        public ProductsSet(List<PairValue<ProductModel, int>> products) {
             this.products = products;
         }
 

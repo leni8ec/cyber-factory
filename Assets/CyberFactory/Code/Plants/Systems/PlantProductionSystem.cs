@@ -1,11 +1,12 @@
-﻿using CyberFactory.Common.Components;
+﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Components;
 using CyberFactory.Plants.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
 
 namespace CyberFactory.Plants.Systems {
-    [CreateAssetMenu(menuName = "Systems/Plant Production", fileName = nameof(PlantProductionSystem))]
+    [CreateAssetMenu(menuName = AssetMenu.Systems.PLANTS + "Production", fileName = nameof(PlantProductionSystem), order = AssetMenu.Systems.PLANTS_ORDER)]
     public class PlantProductionSystem : UpdateSystem {
 
         private Filter filter;
