@@ -24,8 +24,13 @@ namespace CyberFactory.Plants.Systems {
 
         public override void OnUpdate(float deltaTime) {
             foreach (var idlePlant in requestsPlants) {
-                var recipe = idlePlant.GetComponent<Plant>().model.product.recipe;
+                var plant = idlePlant.GetComponent<Plant>().model;
+                if (!plant) {
+                    Debug.LogError($"Plant model is null");
+                    return;
+                }
 
+                var recipe = plant.product.recipe;
                 ref var resourceRequest = ref idlePlant.AddComponent<InventoryProductsRequest>();
                 resourceRequest.products = recipe;
             }

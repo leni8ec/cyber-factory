@@ -306,6 +306,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant_2 - Stone
       objectReference: {fileID: 0}
+    - target: {fileID: 7544070071761833779, guid: 046251c4c5faa03408031251885567fa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9153230513630534202, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -424,6 +428,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant_3 - Metal
       objectReference: {fileID: 0}
+    - target: {fileID: 7544070071761833779, guid: 046251c4c5faa03408031251885567fa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9153230513630534202, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -512,10 +520,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plant_4 - Drill
       objectReference: {fileID: 0}
-    - target: {fileID: 7544070071761833779, guid: 046251c4c5faa03408031251885567fa, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9153230513630534202, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.5
@@ -581,10 +585,6 @@ PrefabInstance:
     - target: {fileID: 3799983807412565214, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_Name
       value: Plant_6 - Hummer
-      objectReference: {fileID: 0}
-    - target: {fileID: 7544070071761833779, guid: 046251c4c5faa03408031251885567fa, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9153230513630534202, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -655,11 +655,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 2538a52521b764548be9398ec720722e, type: 2}
     - target: {fileID: 3799983807412565214, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_Name
-      value: Plant_5 - Fork
-      objectReference: {fileID: 0}
-    - target: {fileID: 7544070071761833779, guid: 046251c4c5faa03408031251885567fa, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+      value: Plant_5 - Pitchfork
       objectReference: {fileID: 0}
     - target: {fileID: 9153230513630534202, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -902,6 +898,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2f59a81c40e817c439b69fca03b33a19, type: 2}
     - {fileID: 11400000, guid: c5961eaa3fc110b4ea485f2e798e4833, type: 2}
     - {fileID: 0}
+    - {fileID: 11400000, guid: 1e0689c17b265284db3ae7df6c5b18e4, type: 2}
+    - {fileID: 11400000, guid: 5ce9e521f95b1d44591d2816fec5bf32, type: 2}
     - {fileID: 11400000, guid: 88ff647430d6b4f47928d277f1fe02e3, type: 2}
 --- !u!1 &2051108867
 GameObject:
@@ -1058,6 +1056,10 @@ PrefabInstance:
     - target: {fileID: 3799983807412565214, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_Name
       value: Plant_1 - Wood
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544070071761833779, guid: 046251c4c5faa03408031251885567fa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9153230513630534202, guid: 046251c4c5faa03408031251885567fa, type: 3}
       propertyPath: m_LocalPosition.x
