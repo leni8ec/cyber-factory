@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Models;
 using CyberFactory.Products.Models;
 using TriInspector;
 using UnityEngine;
 
 namespace CyberFactory.Plants.Models {
     [CreateAssetMenu(menuName = AssetMenu.Models.PLANT, fileName = "Plant", order = AssetMenu.Models.PLANT_ORDER)] [HideMonoScript]
-    public class PlantModel : ScriptableObject {
+    public class PlantModel : ItemModelBase {
 
         [PropertySpace]
         public ProductModel product;

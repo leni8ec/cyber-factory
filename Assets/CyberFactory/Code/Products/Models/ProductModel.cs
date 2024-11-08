@@ -1,12 +1,15 @@
+using System.IO;
 using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Common.Models;
 using CyberFactory.Products.Objects;
 using TriInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace CyberFactory.Products.Models {
-    [CreateAssetMenu(menuName = AssetMenu.Models.PRODUCT, fileName = "Plant", order = AssetMenu.Models.PRODUCT_ORDER)] [HideMonoScript]
-    public class ProductModel : ScriptableObject {
+    [CreateAssetMenu(menuName = AssetMenu.Models.PRODUCT, fileName = "Product", order = AssetMenu.Models.PRODUCT_ORDER)] [HideMonoScript]
+    public class ProductModel : ItemModelBase {
 
         [PropertySpace]
         public AssetReferenceSprite icon;
