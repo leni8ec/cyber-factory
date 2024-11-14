@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace CyberFactory.Utility.InfoPanel {
 
-    [CreateAssetMenu(menuName = AssetMenu.Systems.UTILITY + "InfoPanel", fileName = nameof(InfoPanelSystem), order = AssetMenu.Systems.UTILITY_ORDER)]
+    [CreateAssetMenu(menuName = AssetMenu.Utility.SYSTEM + "InfoPanel", fileName = nameof(InfoPanelSystem), order = AssetMenu.Utility.ORDER)]
     public sealed class InfoPanelSystem : LateUpdateSystem {
         private InventoryService inventory;
         private Filter filter;

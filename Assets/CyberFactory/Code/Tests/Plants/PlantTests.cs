@@ -2,13 +2,14 @@
 using System.Linq;
 using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
+using CyberFactory.Common.States;
 using CyberFactory.Inventories.Components;
-using CyberFactory.Inventories.Requests;
+using CyberFactory.Inventories.Queries;
 using CyberFactory.Inventories.Services;
 using CyberFactory.Inventories.Systems;
-using CyberFactory.Plants.Components;
-using CyberFactory.Plants.Models;
-using CyberFactory.Plants.Systems;
+using CyberFactory.Plants.Core.Components;
+using CyberFactory.Plants.Core.Models;
+using CyberFactory.Plants.Production.Systems;
 using CyberFactory.Products.Components;
 using CyberFactory.Products.Models;
 using CyberFactory.Products.Objects;
@@ -31,7 +32,7 @@ namespace CyberFactory.Tests.Plants {
             AddSystem<PlantProductionSystem>();
             AddSystem<PlantProductionCompleteSystem>();
 
-            AddSystem<InventoryRequestSystem>();
+            AddSystem<InventoryOrderSystem>();
             AddSystem<InventoryPullSystem>();
             AddSystem<InventoryServiceSyncSystem>();
         }
@@ -78,8 +79,8 @@ namespace CyberFactory.Tests.Plants {
 
             // Assert
             foreach (var plant in plants) {
-                Assert.IsTrue(plant.Has<InventoryProductsRequest>()); // request added
-                Assert.IsTrue(plant.Has<RequestApprovedState>()); // request approved
+                Assert.IsTrue(plant.Has<InventoryProductsOrder>()); // request added
+                Assert.IsTrue(plant.Has<OrderApprovedState>()); // request approved
                 Assert.IsFalse(plant.Has<Progress>()); // but not started to production
             }
         }
@@ -94,8 +95,8 @@ namespace CyberFactory.Tests.Plants {
 
             // Assert
             foreach (var plant in plants) {
-                Assert.IsFalse(plant.Has<InventoryProductsRequest>()); // request - removed
-                Assert.IsFalse(plant.Has<RequestApprovedState>()); // request approved flag - removed
+                Assert.IsFalse(plant.Has<InventoryProductsOrder>()); // request - removed
+                Assert.IsFalse(plant.Has<OrderApprovedState>()); // request approved flag - removed
                 Assert.IsTrue(plant.Has<Progress>()); // production started
                 Assert.AreApproximatelyEqual(0.1f, plant.GetComponent<Progress>());
             }
@@ -130,8 +131,8 @@ namespace CyberFactory.Tests.Plants {
             // Assert production result
             RunAllSystems(1f, 1);
             foreach (var plant in plants) {
-                Assert.IsFalse(plant.Has<InventoryProductsRequest>()); // request - removed
-                Assert.IsFalse(plant.Has<RequestApprovedState>()); // request approved flag - removed
+                Assert.IsFalse(plant.Has<InventoryProductsOrder>()); // request - removed
+                Assert.IsFalse(plant.Has<OrderApprovedState>()); // request approved flag - removed
                 Assert.IsFalse(plant.Has<Progress>()); // production not started yed (2nd time)
                 Assert.IsTrue(plant.Has<ActiveState>()); // plant is active
             }
@@ -142,8 +143,8 @@ namespace CyberFactory.Tests.Plants {
             // Assert new request (2nd time)
             RunAllSystems(0.1f, 1);
             foreach (var plant in plants) {
-                Assert.IsTrue(plant.Has<InventoryProductsRequest>()); // request - removed
-                Assert.IsTrue(plant.Has<RequestApprovedState>()); // request approved flag - removed
+                Assert.IsTrue(plant.Has<InventoryProductsOrder>()); // request - removed
+                Assert.IsTrue(plant.Has<OrderApprovedState>()); // request approved flag - removed
                 Assert.IsFalse(plant.Has<Progress>()); // production started (2nd time)
                 Assert.IsTrue(plant.Has<ActiveState>()); // plant is active
             }
@@ -151,8 +152,8 @@ namespace CyberFactory.Tests.Plants {
             // Assert new production cycle (2nd time)
             RunAllSystems(0.1f, 1);
             foreach (var plant in plants) {
-                Assert.IsFalse(plant.Has<InventoryProductsRequest>()); // request - removed
-                Assert.IsFalse(plant.Has<RequestApprovedState>()); // request approved flag - removed
+                Assert.IsFalse(plant.Has<InventoryProductsOrder>()); // request - removed
+                Assert.IsFalse(plant.Has<OrderApprovedState>()); // request approved flag - removed
                 Assert.IsTrue(plant.Has<Progress>()); // production started (2nd time)
                 Assert.IsTrue(plant.Has<ActiveState>()); // plant is active
             }
@@ -160,8 +161,8 @@ namespace CyberFactory.Tests.Plants {
             // Assert production result (2nd time)
             RunAllSystems(1f, 1);
             foreach (var plant in plants) {
-                Assert.IsFalse(plant.Has<InventoryProductsRequest>()); // request - removed
-                Assert.IsFalse(plant.Has<RequestApprovedState>()); // request approved flag - removed
+                Assert.IsFalse(plant.Has<InventoryProductsOrder>()); // request - removed
+                Assert.IsFalse(plant.Has<OrderApprovedState>()); // request approved flag - removed
                 Assert.IsFalse(plant.Has<Progress>()); // production not started yed (2nd time)
                 Assert.IsTrue(plant.Has<ActiveState>()); // plant is active
             }
@@ -226,8 +227,8 @@ namespace CyberFactory.Tests.Plants {
 
             // Assert is request approved
             if (productionCyclesCount > 0 || isDummyRequest) {
-                Assert.IsTrue(productionPlant.Has<InventoryProductsRequest>()); // request - removed
-                Assert.IsTrue(productionPlant.Has<RequestApprovedState>()); // request approved flag - removed
+                Assert.IsTrue(productionPlant.Has<InventoryProductsOrder>()); // request - removed
+                Assert.IsTrue(productionPlant.Has<OrderApprovedState>()); // request approved flag - removed
                 Assert.IsFalse(productionPlant.Has<Progress>()); // production not started yed (2nd time)
                 Assert.IsTrue(productionPlant.Has<ActiveState>()); // plant is active
             }
@@ -283,7 +284,7 @@ namespace CyberFactory.Tests.Plants {
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;
-            entity.AddComponent<InventoryItemPullRequest>();
+            entity.AddComponent<InventoryItemPullCall>();
             return entity;
         }
 

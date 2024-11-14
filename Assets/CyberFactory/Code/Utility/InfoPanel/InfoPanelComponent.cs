@@ -16,7 +16,7 @@ namespace CyberFactory.Utility.InfoPanel {
         [PropertySpace]
         [Tooltip("Disable it for show all inventory items")]
         public bool useProductFilter;
-        
+
         [FormerlySerializedAs("products")]
         [ShowIf(nameof(useProductFilter))]
         [Tooltip("Products to show")]

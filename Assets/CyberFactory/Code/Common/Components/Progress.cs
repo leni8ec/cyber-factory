@@ -20,7 +20,7 @@ namespace CyberFactory.Common.Components {
         }
 
         public static implicit operator float(Progress progress) => progress.value;
-    
+
     }
 
 }

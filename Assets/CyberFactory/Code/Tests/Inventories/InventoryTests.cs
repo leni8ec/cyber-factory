@@ -3,8 +3,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
+using CyberFactory.Common.States;
 using CyberFactory.Inventories.Components;
-using CyberFactory.Inventories.Requests;
+using CyberFactory.Inventories.Queries;
 using CyberFactory.Inventories.Services;
 using CyberFactory.Inventories.Systems;
 using CyberFactory.Products.Components;
@@ -166,7 +167,7 @@ namespace CyberFactory.Tests.Inventories {
 
             // Systems
             AddSystem<InventoryPullSystem>();
-            AddSystem<InventoryRequestSystem>();
+            AddSystem<InventoryOrderSystem>();
 
             // Prepare
             // 1. Init inventory items
@@ -180,7 +181,7 @@ namespace CyberFactory.Tests.Inventories {
             RunAllSystems(1, 5);
 
             // Assert is request approved
-            bool isRequestApproved = requestEntity.Has<RequestApprovedState>();
+            bool isRequestApproved = requestEntity.Has<OrderApprovedState>();
 
             // Assert remaining items count
             int n = Mathf.Min(initCounts.Length, requestItemsCounts.Length);
@@ -206,7 +207,7 @@ namespace CyberFactory.Tests.Inventories {
         public void Sequence1_Pull_Request() {
             // Systems
             AddSystem<InventoryPullSystem>();
-            AddSystem<InventoryRequestSystem>();
+            AddSystem<InventoryOrderSystem>();
 
             // Process
             var product = products[0];
@@ -216,7 +217,7 @@ namespace CyberFactory.Tests.Inventories {
             RunAllSystems(1, 5);
 
             // Assert
-            bool isRequestApproved = requestEntity.Has<RequestApprovedState>();
+            bool isRequestApproved = requestEntity.Has<OrderApprovedState>();
             Assert.That(isRequestApproved);
         }
 
@@ -225,7 +226,7 @@ namespace CyberFactory.Tests.Inventories {
         public void Sequence2_Request_Pull() {
             // Systems
             AddSystem<InventoryPullSystem>();
-            AddSystem<InventoryRequestSystem>();
+            AddSystem<InventoryOrderSystem>();
 
             // Process
             var product = products[0];
@@ -235,7 +236,7 @@ namespace CyberFactory.Tests.Inventories {
             RunAllSystems(1, 5);
 
             // Assert
-            bool isRequestApproved = requestEntity.Has<RequestApprovedState>();
+            bool isRequestApproved = requestEntity.Has<OrderApprovedState>();
             Assert.That(isRequestApproved);
         }
 
@@ -244,7 +245,7 @@ namespace CyberFactory.Tests.Inventories {
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;
-            entity.AddComponent<InventoryItemPullRequest>();
+            entity.AddComponent<InventoryItemPullCall>();
             return entity;
         }
 
@@ -252,7 +253,7 @@ namespace CyberFactory.Tests.Inventories {
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;
-            entity.AddComponent<InventoryItemReleaseRequest>();
+            entity.AddComponent<InventoryItemReleaseCall>();
             return entity;
         }
 
@@ -275,7 +276,7 @@ namespace CyberFactory.Tests.Inventories {
             Debug.Log($"ProductSet: {productsSet}");
             var entity = testWorld.CreateEntity();
             entity.AddComponent<ActiveState>(); // entity must be active to process requests
-            entity.AddComponent<InventoryProductsRequest>().products = productsSet;
+            entity.AddComponent<InventoryProductsOrder>().products = productsSet;
             return entity;
         }
 

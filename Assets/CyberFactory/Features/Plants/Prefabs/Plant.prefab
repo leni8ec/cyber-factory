@@ -88,7 +88,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
+    transform: {fileID: 9153230513630534202}
     progressBar: {fileID: 5326992931284067608}
+    productGhostConfig: {fileID: 11400000, guid: f20e1eda22998cd47adf4f605a23561f, type: 2}
 --- !u!1 &5343852838376938539
 GameObject:
   m_ObjectHideFlags: 0

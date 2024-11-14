@@ -1,7 +1,7 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
-using CyberFactory.Inventories.Requests;
+using CyberFactory.Inventories.Queries;
 using CyberFactory.Products.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
@@ -12,29 +12,29 @@ namespace CyberFactory.Inventories.Systems {
     /// Pull items to the inventory
     /// note: Order [Last] but before [InventoryServiceSyncSystem]
     /// </summary>
-    [CreateAssetMenu(menuName = AssetMenu.Systems.INVENTORY + "Pull", fileName = nameof(InventoryPullSystem), order = AssetMenu.Systems.INVENTORY_ORDER)]
+    [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Pull", fileName = nameof(InventoryPullSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryPullSystem : UpdateSystem {
 
         private Filter pullItems;
         private Filter inventories;
 
         public override void OnAwake() {
-            pullItems = World.Filter.With<InventoryItemPullRequest>().Build();
+            pullItems = World.Filter.With<InventoryItemPullCall>().Build();
             inventories = World.Filter.With<Inventory>().Build();
         }
 
         public override void OnUpdate(float deltaTime) {
             var service = inventories.FirstOrDefault().GetComponent<Inventory>().service;
 
-            foreach (var pullItemEntity in pullItems) {
-                var pullProduct = pullItemEntity.GetComponent<Product>();
+            foreach (var pullEntity in pullItems) {
+                var pullProduct = pullEntity.GetComponent<Product>();
 
                 bool itemExists = service.Has(pullProduct);
-                var pullCount = pullItemEntity.GetComponent<Count>(out bool stackable);
+                var pullCount = pullEntity.GetComponent<Count>(out bool stackable);
 
                 if (stackable && pullCount <= 0) {
                     Debug.LogWarning("[Inventory] Pull items 'Count' must be > '0'");
-                    World.RemoveEntity(pullItemEntity);
+                    World.RemoveEntity(pullEntity);
                     continue;
                 }
 
@@ -45,12 +45,12 @@ namespace CyberFactory.Inventories.Systems {
                     count.Change(pullCount, out var changedCount); // add pull count
                     inventoryItemEntity.AddComponent<ChangedCount>() = changedCount;
 
-                    World.RemoveEntity(pullItemEntity); //  no need to remove 'InventoryItemPullRequest'
+                    World.RemoveEntity(pullEntity); // no need to remove pull query ('InventoryItemPullCall')
 
                 } else { // Add new item to inventory - if product is not stackable or not exists in inventory before
 
-                    pullItemEntity.RemoveComponent<InventoryItemPullRequest>();
-                    pullItemEntity.AddComponent<InventoryItem>();
+                    pullEntity.RemoveComponent<InventoryItemPullCall>();
+                    pullEntity.AddComponent<InventoryItem>();
                 }
 
             }

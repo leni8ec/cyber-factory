@@ -1,7 +1,7 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
-using CyberFactory.Inventories.Requests;
+using CyberFactory.Inventories.Queries;
 using CyberFactory.Products.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
@@ -13,14 +13,14 @@ namespace CyberFactory.Inventories.Systems {
     /// note: Order - [First]
     /// note: not used yet (use 'InventoryRequestSystem' instead)
     /// </summary>
-    [CreateAssetMenu(menuName = AssetMenu.Systems.INVENTORY + "Release", fileName = nameof(InventoryReleaseSystem), order = AssetMenu.Systems.INVENTORY_ORDER)]
+    [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Release", fileName = nameof(InventoryReleaseSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryReleaseSystem : UpdateSystem {
 
         private Filter releaseItems;
         private Filter inventories;
 
         public override void OnAwake() {
-            releaseItems = World.Filter.With<Product>().With<InventoryItemReleaseRequest>().Build();
+            releaseItems = World.Filter.With<Product>().With<InventoryItemReleaseCall>().Build();
             inventories = World.Filter.With<Inventory>().Build();
         }
 
@@ -28,7 +28,7 @@ namespace CyberFactory.Inventories.Systems {
             var service = inventories.FirstOrDefault().GetComponent<Inventory>().service;
 
             foreach (var releaseItem in releaseItems) {
-                releaseItem.RemoveComponent<InventoryItemReleaseRequest>();
+                releaseItem.RemoveComponent<InventoryItemReleaseCall>();
                 var releaseProduct = releaseItem.GetComponent<Product>();
 
                 var inventoryItem = service.TryGet(releaseProduct, out bool itemExists);

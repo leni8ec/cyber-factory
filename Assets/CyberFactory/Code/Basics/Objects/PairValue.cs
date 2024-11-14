@@ -3,6 +3,9 @@ using TriInspector;
 using UnityEngine;
 
 namespace CyberFactory.Basics.Objects {
+    /// <summary>
+    /// Пара 'ключ-значение' для удобной сериализации в Unity инспекторе 
+    /// </summary>
     [Serializable] [InlineProperty] [DeclareHorizontalGroup("Group")]
     public struct PairValue<TKey, TValue> {
 

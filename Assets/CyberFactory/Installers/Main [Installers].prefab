@@ -52,6 +52,58 @@ MonoBehaviour:
   - enabled: 1
     system: {fileID: 11400000, guid: 8137690e5ff01bc43ab0064df1d239e9, type: 2}
   cleanupSystems: []
+--- !u!1 &4899410108933772714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3177335803502217541}
+  - component: {fileID: 698435948796693138}
+  m_Layer: 0
+  m_Name: Common
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3177335803502217541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4899410108933772714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2510341364360519661}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &698435948796693138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4899410108933772714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f3e5db895821594790574b8473edacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  order: 1
+  initializers: []
+  updateSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: 45cc23012a107e24995ad10154933a68, type: 2}
+  fixedUpdateSystems: []
+  lateUpdateSystems: []
+  cleanupSystems: []
 --- !u!1 &5344957894866368515
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,6 +134,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3177335803502217541}
   - {fileID: 5973714682506387356}
   - {fileID: 6746617815661589589}
   - {fileID: 6480027594813587533}
@@ -151,7 +204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   order: 11
-  initializers: []
+  initializers:
+  - {fileID: 11400000, guid: b9c78d71fd25a4e4aad80ab23605f452, type: 2}
   updateSystems: []
   fixedUpdateSystems: []
   lateUpdateSystems: []
@@ -217,6 +271,10 @@ MonoBehaviour:
   lateUpdateSystems:
   - enabled: 1
     system: {fileID: 11400000, guid: 2ee5df94b15fe1642a6691bcc5f414ee, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: e3c33e7cd1abe6c4094db4ddfba722cd, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 4ee1d52ef5267e748a872799ae53fb72, type: 2}
   cleanupSystems: []
 --- !u!1 &8983718023553407751
 GameObject:
@@ -267,6 +325,8 @@ MonoBehaviour:
   updateSystems:
   - enabled: 1
     system: {fileID: 11400000, guid: f9352f9c81400b144a7ef8c8e48401be, type: 2}
+  - enabled: 1
+    system: {fileID: 11400000, guid: 361a29e6cd5327f419e5a52f7919b661, type: 2}
   - enabled: 1
     system: {fileID: 11400000, guid: ca360a2cb04a5c24e8af0861b4df276d, type: 2}
   - enabled: 1

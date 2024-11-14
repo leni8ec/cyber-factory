@@ -1,14 +1,12 @@
-using System.IO;
 using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Common.Models;
 using CyberFactory.Products.Objects;
 using TriInspector;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 namespace CyberFactory.Products.Models {
-    [CreateAssetMenu(menuName = AssetMenu.Models.PRODUCT, fileName = "Product", order = AssetMenu.Models.PRODUCT_ORDER)] [HideMonoScript]
+    [CreateAssetMenu(menuName = AssetMenu.Products.MODEL, fileName = "Product", order = AssetMenu.Products.ORDER)] [HideMonoScript]
     public class ProductModel : ItemModelBase {
 
         [PropertySpace]
