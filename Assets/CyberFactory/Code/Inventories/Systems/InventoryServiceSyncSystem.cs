@@ -14,8 +14,7 @@ namespace CyberFactory.Inventories.Systems {
 
     /// <summary>
     /// Create inventory service and sync it with inventory entities ('InventoryItem')
-    /// note: Order - [Last] in inventories
-    /// <para/> Must be last in inventory systems
+    /// <para/> note: Order - [Last] in inventories
     /// </summary>
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Service Sync", fileName = nameof(InventoryServiceSyncSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryServiceSyncSystem : UpdateSystem {

@@ -204,9 +204,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   order: 11
-  initializers:
-  - {fileID: 11400000, guid: b9c78d71fd25a4e4aad80ab23605f452, type: 2}
-  updateSystems: []
+  initializers: []
+  updateSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: b9c78d71fd25a4e4aad80ab23605f452, type: 2}
   fixedUpdateSystems: []
   lateUpdateSystems: []
   cleanupSystems: []

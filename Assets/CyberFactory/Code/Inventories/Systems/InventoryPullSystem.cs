@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CyberFactory.Inventories.Systems {
     /// <summary>
-    /// Pull items to the inventory
+    /// Pull items to the inventory <br/><br/>
     /// note: Order [Last] but before [InventoryServiceSyncSystem]
     /// </summary>
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Pull", fileName = nameof(InventoryPullSystem), order = AssetMenu.Inventory.ORDER)]
@@ -42,8 +42,15 @@ namespace CyberFactory.Inventories.Systems {
                     var inventoryItemEntity = service.Get(pullProduct);
                     ref var count = ref inventoryItemEntity.GetComponent<Count>();
 
-                    count.Change(pullCount, out var changedCount); // add pull count
-                    inventoryItemEntity.AddComponent<ChangedCount>() = changedCount;
+                    if (inventoryItemEntity.Has<ChangedCount>()) { // if item is already changed in this frame
+                        int firstOldValue = inventoryItemEntity.GetComponent<ChangedCount>().oldValue; // claim first `oldValue`
+                        count.Change(pullCount, out var changedCount); // add pull count
+                        changedCount.oldValue = firstOldValue; // revert first `oldValue`
+                        inventoryItemEntity.GetComponent<ChangedCount>() = changedCount;
+                    } else {
+                        count.Change(pullCount, out var changedCount); // add pull count
+                        inventoryItemEntity.AddComponent<ChangedCount>() = changedCount;
+                    }
 
                     World.RemoveEntity(pullEntity); // no need to remove pull query ('InventoryItemPullCall')
 

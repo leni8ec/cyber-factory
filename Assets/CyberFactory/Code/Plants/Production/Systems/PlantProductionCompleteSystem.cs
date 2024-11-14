@@ -1,6 +1,6 @@
 using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Plants.Core.Components;
-using CyberFactory.Plants.Events;
+using CyberFactory.Products.Requests;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
@@ -19,8 +19,8 @@ namespace CyberFactory.Plants.Production.Systems {
             foreach (var entity in filter) {
                 var plant = entity.GetComponent<Plant>().model;
 
-                // todo: stopped this
-                World.GetEvent<ProductionCompleteEvent>().NextFrame(new ProductionCompleteEvent(entity, plant.product));
+                const int count = 1; // default production count value (move it to config later)
+                World.GetRequest<CreateProductRequest>().Publish(new CreateProductRequest(entity, plant.product, count));
 
                 entity.RemoveComponent<ProductionComplete>();
             }

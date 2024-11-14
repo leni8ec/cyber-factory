@@ -13,7 +13,7 @@ using UnityEngine;
 namespace CyberFactory.Inventories.Systems {
 
     /// <summary>
-    /// Process inventory orders and release items to their clients (ex: plants)
+    /// Process inventory orders and release items to their clients (ex: plants) <br/><br/>
     /// note: Order - [Second] (or [First] if without 'Release' system)
     /// </summary>
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Order", fileName = nameof(InventoryOrderSystem), order = AssetMenu.Inventory.ORDER)]

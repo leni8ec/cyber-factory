@@ -9,8 +9,8 @@ using UnityEngine;
 
 namespace CyberFactory.Inventories.Systems {
     /// <summary>
-    /// Release items from the inventory
-    /// note: Order - [First]
+    /// Release items from the inventory <br/><br/>
+    /// note: Order - [First] <br/>
     /// note: not used yet (use 'InventoryRequestSystem' instead)
     /// </summary>
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Release", fileName = nameof(InventoryReleaseSystem), order = AssetMenu.Inventory.ORDER)]
