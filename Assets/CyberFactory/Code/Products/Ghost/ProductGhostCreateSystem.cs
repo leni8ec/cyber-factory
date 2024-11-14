@@ -1,4 +1,5 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Basics.Extensions;
 using CyberFactory.Plants.Core.Components.View;
 using CyberFactory.Products.Events;
 using Cysharp.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace CyberFactory.Products.Ghost {
             var sprite = await Addressables.LoadAssetAsync<Sprite>(spriteReference).WithCancellation(token);
             var spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = sprite;
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0f); // predefine color value to avoid glitches
+            spriteRenderer.SetColorAlpha(0); // predefine color value to avoid glitches
             gameObject.transform.position = sourcePosition + ghostConfig.startOffset;
             gameObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f); // todo: scale (implement prefab usage)
 

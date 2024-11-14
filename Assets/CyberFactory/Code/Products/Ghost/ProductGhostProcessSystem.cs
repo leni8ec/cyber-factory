@@ -1,4 +1,5 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Timer;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
@@ -26,14 +27,12 @@ namespace CyberFactory.Products.Ghost {
                     ghost.transform.localPosition = targetPos;
 
                     if (progress < 0.2f) {
-                        var color = ghost.spriteRenderer.color;
-                        color.a = progress * 5;
-                        ghost.spriteRenderer.color = color;
+                        float alpha = progress * 5;
+                        ghost.spriteRenderer.SetColorAlpha(alpha);
                     }
                 } else {
-                    var color = ghost.spriteRenderer.color;
-                    color.a = 1 - (progress - 0.7f) / 0.3f;
-                    ghost.spriteRenderer.color = color;
+                    float alpha = 1 - (progress - 0.7f) / 0.3f;
+                    ghost.spriteRenderer.SetColorAlpha(alpha);
                 }
             }
         }
