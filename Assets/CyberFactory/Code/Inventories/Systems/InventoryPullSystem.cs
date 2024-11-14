@@ -1,4 +1,5 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Queries;
@@ -39,18 +40,10 @@ namespace CyberFactory.Inventories.Systems {
                 }
 
                 if (itemExists && stackable) { // Add item count - if product exists and stackable
-                    var inventoryItemEntity = service.Get(pullProduct);
-                    ref var count = ref inventoryItemEntity.GetComponent<Count>();
+                    var itemEntity = service.Get(pullProduct);
 
-                    if (inventoryItemEntity.Has<ChangedCount>()) { // if item is already changed in this frame
-                        int firstOldValue = inventoryItemEntity.GetComponent<ChangedCount>().oldValue; // claim first `oldValue`
-                        count.Change(pullCount, out var changedCount); // add pull count
-                        changedCount.oldValue = firstOldValue; // revert first `oldValue`
-                        inventoryItemEntity.GetComponent<ChangedCount>() = changedCount;
-                    } else {
-                        count.Change(pullCount, out var changedCount); // add pull count
-                        inventoryItemEntity.AddComponent<ChangedCount>() = changedCount;
-                    }
+                    ref var itemCount = ref itemEntity.GetComponent<Count>();
+                    itemCount.ChangeSmart(pullCount, itemEntity); // add pull count
 
                     World.RemoveEntity(pullEntity); // no need to remove pull query ('InventoryItemPullCall')
 

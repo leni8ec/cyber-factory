@@ -1,4 +1,5 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Queries;
@@ -31,7 +32,7 @@ namespace CyberFactory.Inventories.Systems {
                 releaseItem.RemoveComponent<InventoryItemReleaseCall>();
                 var releaseProduct = releaseItem.GetComponent<Product>();
 
-                var inventoryItem = service.TryGet(releaseProduct, out bool itemExists);
+                var itemEntity = service.TryGet(releaseProduct, out bool itemExists);
                 if (!itemExists) {
                     Debug.LogWarning("[Inventory] Item to release - isn't exists");
                     World.RemoveEntity(releaseItem);
@@ -47,18 +48,17 @@ namespace CyberFactory.Inventories.Systems {
                         continue;
                     }
 
-                    ref var inventoryCount = ref inventoryItem.GetComponent<Count>();
-                    if (releaseCount.value > inventoryCount.value)
-                        Debug.LogWarning($"[Inventory] item count [{inventoryCount.value}] isn't enough to release [{releaseCount.value}]");
+                    ref var itemCount = ref itemEntity.GetComponent<Count>();
+                    if (releaseCount.value > itemCount.value)
+                        Debug.LogWarning($"[Inventory] item count [{itemCount.value}] isn't enough to release [{releaseCount.value}]");
 
-                    inventoryCount.Change(-releaseCount, out var changedCount); // subtract release count
-                    inventoryItem.AddComponent<ChangedCount>() = changedCount;
+                    itemCount.ChangeSmart(-releaseCount, itemEntity); // subtract release count
 
-                    if (inventoryCount.value <= 0) removeInventoryItem = true;
+                    if (itemCount.value <= 0) removeInventoryItem = true;
                 }
 
                 World.RemoveEntity(releaseItem);
-                if (removeInventoryItem) World.RemoveEntity(inventoryItem); // Remove item from inventory - if item is not stackable or remaining count == 0 
+                if (removeInventoryItem) World.RemoveEntity(itemEntity); // Remove item from inventory - if item is not stackable or remaining count == 0 
             }
         }
 

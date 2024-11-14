@@ -1,4 +1,5 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
 using CyberFactory.Common.States;
 using CyberFactory.Inventories.Components;
@@ -88,13 +89,12 @@ namespace CyberFactory.Inventories.Systems {
                     continue; // Issue log error, but do not break the process 
                 }
 
-                var inventoryItemEntity = inventory.Get(product);
+                var itemEntity = inventory.Get(product);
                 if (!product.stackable) {
-                    World.RemoveEntity(inventoryItemEntity); // Remove orders entities from inventory
+                    World.RemoveEntity(itemEntity); // Remove orders entities from inventory
                 } else {
-                    ref var inventoryItemCount = ref inventoryItemEntity.GetComponent<Count>();
-                    inventoryItemCount.Change(-count, out var changedCount); // subtract order count
-                    inventoryItemEntity.AddComponent<ChangedCount>() = changedCount;
+                    ref var itemCount = ref itemEntity.GetComponent<Count>();
+                    itemCount.ChangeSmart(-count, itemEntity); // subtract order count
                 }
             }
         }
