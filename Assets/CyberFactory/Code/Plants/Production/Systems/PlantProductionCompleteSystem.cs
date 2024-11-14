@@ -20,7 +20,7 @@ namespace CyberFactory.Plants.Production.Systems {
                 var plant = entity.GetComponent<Plant>().model;
 
                 const int count = 1; // default production count value (move it to config later)
-                World.GetRequest<CreateProductRequest>().Publish(new CreateProductRequest(entity, plant.product, count));
+                World.GetRequest<ProductCreateRequest>().Publish(new ProductCreateRequest(entity, plant.product, count));
 
                 entity.RemoveComponent<ProductionComplete>();
             }

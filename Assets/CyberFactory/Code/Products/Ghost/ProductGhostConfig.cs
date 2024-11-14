@@ -2,7 +2,7 @@
 using TriInspector;
 using UnityEngine;
 
-namespace CyberFactory.Plants.ProductionCompleteEffect {
+namespace CyberFactory.Products.Ghost {
     [CreateAssetMenu(fileName = "ProductGhost", menuName = AssetMenu.Plants.CONFIG + "Product Ghost (on production complete)", order = AssetMenu.Plants.ORDER)]
     // [CreateAssetMenu(fileName = "ProductGhost", menuName = "Config/ProductGhost", order = 0)]
     public class ProductGhostConfig : ScriptableObject {

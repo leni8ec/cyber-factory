@@ -49,6 +49,7 @@
 
         public static class Products {
             public const int ORDER = PRODUCTS_ORDER;
+            public const int ORDER_VIEW = PLANTS_ORDER + VIEW_ORDER_SHIFT;
             public const string SUFFIX = PRODUCTS_SUFFIX;
 
             public const string PROVIDER = PROVIDERS_NAME + SUFFIX;

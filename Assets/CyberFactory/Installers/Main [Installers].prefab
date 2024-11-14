@@ -204,13 +204,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   order: 11
-  initializers: []
+  initializers:
+  - {fileID: 11400000, guid: e3c33e7cd1abe6c4094db4ddfba722cd, type: 2}
   updateSystems:
   - enabled: 1
     system: {fileID: 11400000, guid: b9c78d71fd25a4e4aad80ab23605f452, type: 2}
   fixedUpdateSystems: []
-  lateUpdateSystems: []
-  cleanupSystems: []
+  lateUpdateSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: 4ee1d52ef5267e748a872799ae53fb72, type: 2}
+  cleanupSystems:
+  - enabled: 1
+    system: {fileID: 11400000, guid: a767d5cbd53dc2e4796ba4940cfcd114, type: 2}
 --- !u!1 &8766453446617635829
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,10 +277,6 @@ MonoBehaviour:
   lateUpdateSystems:
   - enabled: 1
     system: {fileID: 11400000, guid: 2ee5df94b15fe1642a6691bcc5f414ee, type: 2}
-  - enabled: 1
-    system: {fileID: 11400000, guid: e3c33e7cd1abe6c4094db4ddfba722cd, type: 2}
-  - enabled: 1
-    system: {fileID: 11400000, guid: 4ee1d52ef5267e748a872799ae53fb72, type: 2}
   cleanupSystems: []
 --- !u!1 &8983718023553407751
 GameObject:

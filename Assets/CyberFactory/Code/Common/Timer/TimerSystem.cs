@@ -10,17 +10,16 @@ namespace CyberFactory.Common.Timer {
         private Filter filter;
 
         public override void OnAwake() {
-            filter = World.Filter.With<Timer>().Build();
+            filter = World.Filter.With<Timer>().Without<TimerComplete>().Build();
         }
 
         public override void OnUpdate(float deltaTime) {
             foreach (var entity in filter) {
                 ref var timer = ref entity.GetComponent<Timer>();
-                timer.duration += deltaTime;
+                timer.time += deltaTime;
                 if (!timer.IsComplete) continue;
 
-                entity.AddComponent<CompleteState>();
-                entity.RemoveComponent<Timer>();
+                entity.AddComponent<TimerComplete>();
             }
         }
     }

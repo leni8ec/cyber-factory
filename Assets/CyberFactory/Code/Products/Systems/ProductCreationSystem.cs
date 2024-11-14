@@ -2,6 +2,7 @@
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Queries;
 using CyberFactory.Products.Components;
+using CyberFactory.Products.Events;
 using CyberFactory.Products.Requests;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
@@ -12,10 +13,10 @@ namespace CyberFactory.Products.Systems {
 
     [CreateAssetMenu(menuName = AssetMenu.Products.SYSTEM + nameof(ProductCreationSystem), order = AssetMenu.Products.ORDER)]
     public sealed class ProductCreationSystem : UpdateSystem {
-        private Request<CreateProductRequest> createRequest;
+        private Request<ProductCreateRequest> createRequest;
 
         public override void OnAwake() {
-            createRequest = World.GetRequest<CreateProductRequest>();
+            createRequest = World.GetRequest<ProductCreateRequest>();
         }
 
         public override void OnUpdate(float deltaTime) {
@@ -25,6 +26,13 @@ namespace CyberFactory.Products.Systems {
                 productEntity.AddComponent<Count>().value = createProductRequest.count;
 
                 productEntity.AddComponent<InventoryItemPullCall>();
+
+                // Publish event
+                World.GetEvent<ProductCreatedEvent>().NextFrame(new ProductCreatedEvent(
+                    createProductRequest.plantEntity,
+                    productEntity,
+                    createProductRequest.product,
+                    createProductRequest.count));
             }
         }
 

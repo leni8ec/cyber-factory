@@ -47,7 +47,7 @@ namespace CyberFactory.Inventories.Systems {
             inventory ??= inventoryFilter.FirstOrDefault().GetComponent<Inventory>().service;
 
             if (incomingOrders.IsEmpty()) return;
-            Debug.Log($"InventoryOrderSystem: new incoming orders is available");
+            // Debug.Log($"InventoryOrderSystem: new incoming orders is available");
             CheckOrders(incomingOrders, false);
         }
 

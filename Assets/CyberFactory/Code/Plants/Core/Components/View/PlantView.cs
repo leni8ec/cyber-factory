@@ -1,5 +1,5 @@
 ﻿using System;
-using CyberFactory.Plants.ProductionCompleteEffect;
+using CyberFactory.Products.Ghost;
 using Scellecs.Morpeh;
 using UnityEngine;
 using UnityEngine.UI;

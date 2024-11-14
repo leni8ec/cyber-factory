@@ -13,15 +13,15 @@ namespace CyberFactory.Common.Timer {
     public struct Timer : IComponent {
 
         [Tooltip("Total duration of the timer")]
-        public float duration;
+        public float interval;
 
         [Tooltip("Elapsed time in seconds")]
         public float time;
 
-        public float TimeLeft => time >= duration ? 0 : duration - time;
-        public bool IsComplete => time >= duration;
+        public float TimeLeft => time >= interval ? 0 : interval - time;
+        public bool IsComplete => time >= interval;
 
-        public float Progress => IsComplete ? 1 : time / duration;
+        public float Progress => Mathf.Clamp01(time / interval);
 
     }
 }
