@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CyberFactory.Common.Components;
 using CyberFactory.Products.Components;
 using CyberFactory.Products.Models;
@@ -9,12 +10,16 @@ using UnityEngine;
 namespace CyberFactory.Inventories.Services {
 
     // todo: there is no implemented solution for storing not stackable items
-    public class InventoryService {
-        private readonly Dictionary<ProductModel, Entity> items = new();
+    public class InventoryService : IDisposable {
+        private Dictionary<ProductModel, Entity> items = new();
         public IReadOnlyDictionary<ProductModel, Entity> Items => items;
 
         public int ItemsCount => items.Count;
 
+        public void Dispose() {
+            items.Clear();
+            items = null;
+        }
 
         public bool Has(Product product) {
             return Has(product.model);
@@ -29,6 +34,7 @@ namespace CyberFactory.Inventories.Services {
         }
 
         public bool Has(ProductsSet productsSet) {
+            Debug.Log(this.GetHashCode());
             if (productsSet.IsEmpty) {
                 Debug.LogWarning("[Inventory] Checked 'ProductSet' is empty!");
                 return true;
@@ -43,7 +49,13 @@ namespace CyberFactory.Inventories.Services {
                         continue; // request item requirement is empty
                 }
 
-                if (!items.TryGetValue(product, out var itemEntity)) return false; //       if product exists
+
+                if (!items.TryGetValue(product, out var itemEntity)) // Check for product exists
+                    return false;
+                if (itemEntity.IsDisposed()) { // Check for valid entity
+                    Debug.LogWarning("[Inventory] Entity of the inventory item - has been disposed before");
+                    return false;
+                }
                 var itemCount = itemEntity.GetComponent<Count>(out bool itemCountExists);
                 if (product.stackable) { //                                                 if stackable 
                     if (!itemCountExists) { //                                                  - if inventory has not 'count' component
@@ -81,6 +93,10 @@ namespace CyberFactory.Inventories.Services {
 
         public Entity TryGet(ProductModel product, out bool exists) {
             exists = items.TryGetValue(product, out var entity);
+            if (exists && entity.IsNullOrDisposed()) {
+                Debug.LogWarning("[Inventory] Entity of the inventory item - has been disposed before");
+                exists = false;
+            }
             return entity;
         }
 

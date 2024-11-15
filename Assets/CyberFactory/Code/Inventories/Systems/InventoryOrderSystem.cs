@@ -1,4 +1,6 @@
-﻿using CyberFactory.Basics.Constants.Editor;
+﻿using System;
+using CyberFactory.Basics;
+using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
 using CyberFactory.Common.States;
@@ -18,7 +20,7 @@ namespace CyberFactory.Inventories.Systems {
     /// note: Order - [Second] (or [First] if without 'Release' system)
     /// </summary>
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Order", fileName = nameof(InventoryOrderSystem), order = AssetMenu.Inventory.ORDER)]
-    public sealed class InventoryOrderSystem : UpdateSystem {
+    public class InventoryOrderSystem : UpdateSystem {
 
         private Filter inventoryFilter;
         private InventoryService inventory;
@@ -28,7 +30,10 @@ namespace CyberFactory.Inventories.Systems {
         private Filter pendingRefillOrders;
         private Event<InventoryItemRefillEvent> refillEvent;
 
+        private DisposableTracker disposable;
+
         public override void OnAwake() {
+            disposable = new DisposableTracker();
             inventoryFilter = World.Filter.With<Inventory>().Build();
 
             incomingOrders = World.Filter
@@ -41,7 +46,11 @@ namespace CyberFactory.Inventories.Systems {
                 .Build();
 
             refillEvent = World.GetEvent<InventoryItemRefillEvent>();
-            refillEvent.Subscribe(OnInventoryRefilled);
+            refillEvent.Subscribe(OnInventoryRefilled).AddTo(disposable);
+        }
+
+        public override void Dispose() {
+            disposable.Dispose();
         }
 
         public override void OnUpdate(float deltaTime) {

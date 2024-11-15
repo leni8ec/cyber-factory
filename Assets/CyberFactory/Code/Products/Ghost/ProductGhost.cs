@@ -16,7 +16,7 @@ namespace CyberFactory.Products.Ghost {
 
 
         public void Dispose() {
-            Object.Destroy(transform.gameObject);
+            if (transform) Object.Destroy(transform.gameObject);
         }
 
     }

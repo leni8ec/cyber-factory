@@ -1,5 +1,7 @@
 using System;
+using CyberFactory.Basics;
 using CyberFactory.Basics.Constants.Editor;
+using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Events;
@@ -24,7 +26,11 @@ namespace CyberFactory.Inventories.Systems {
         private Filter itemsChangedCountFilter;
         private SystemStateProcessor<InventorySynchronizedState> inventoryStateProcessor;
 
+        private DisposableTracker disposable;
+
         public override void OnAwake() {
+            Debug.Log("InventoryServiceSyncSystem OnAwake");
+            disposable = new DisposableTracker();
             service = new InventoryService();
 
             ref var inventoryComponent = ref World.CreateEntity().AddComponent<Inventory>();
@@ -37,7 +43,14 @@ namespace CyberFactory.Inventories.Systems {
             World.GetEvent<InventoryItemChangedCountEvent>().Subscribe(events => {
                 foreach (var itemChangedEvent in events)
                     Debug.Log($"[Inventory] Count changed Event: {{ {itemChangedEvent.product.name}: '{itemChangedEvent.newCount}' }}");
-            });
+            }).AddTo(disposable);
+        }
+
+        public override void Dispose() {
+            disposable.Dispose();
+            inventoryStateProcessor.Dispose();
+            service.Dispose();
+            service = null;
         }
 
         public override void OnUpdate(float deltaTime) {
@@ -80,7 +93,7 @@ namespace CyberFactory.Inventories.Systems {
 
         private void RemovedFromInventory(ref InventorySynchronizedState state) {
             bool hasRemoved = service.TrySyncOnRemove(state.product);
-            if (!hasRemoved) Debug.LogWarning("[Inventory] service sync issue - remove item isn't exists");
+            if (!hasRemoved) Debug.LogWarning($"[Inventory] service sync issue - remove item {state.product.model.name} isn't exists");
 
             OnItemRemoved(state.product.model);
         }

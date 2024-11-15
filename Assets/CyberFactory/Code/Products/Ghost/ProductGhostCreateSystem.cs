@@ -1,4 +1,5 @@
-﻿using CyberFactory.Basics.Constants.Editor;
+﻿using CyberFactory.Basics;
+using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Basics.Extensions;
 using CyberFactory.Plants.Core.Components.View;
 using CyberFactory.Products.Events;
@@ -14,7 +15,10 @@ namespace CyberFactory.Products.Ghost {
     [CreateAssetMenu(menuName = AssetMenu.Plants.SYSTEM + "Product Ghost Create", order = AssetMenu.Plants.ORDER_VIEW)]
     public sealed class ProductGhostCreateSystem : Initializer {
 
+        private DisposableTracker disposable;
+
         public override void OnAwake() {
+            disposable = new DisposableTracker();
             World.GetEvent<ProductCreatedEvent>().Subscribe(events => {
                 foreach (var e in events) {
                     var plantView = e.plantEntity.GetComponent<PlantView>();
@@ -24,12 +28,12 @@ namespace CyberFactory.Products.Ghost {
 
                     CreateGhost(ghostConfig, spriteReference, sourcePosition).Forget();
                 }
-            });
+            }).AddTo(disposable);
         }
 
-
-        private void OnEnable() { }
-        private void OnDisable() { }
+        public override void Dispose() {
+            disposable.Dispose();
+        }
 
         private async UniTaskVoid CreateGhost(ProductGhostConfig ghostConfig, AssetReferenceSprite spriteReference, Vector3 sourcePosition) {
 
