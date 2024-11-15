@@ -51,6 +51,9 @@ namespace CyberFactory.Inventories.Systems {
 
         public override void Dispose() {
             disposable.Dispose();
+            
+            // todo: Не понятно, как так происходит, что inventory не зануляется без перезагрузки домена!??
+            inventory = null; 
         }
 
         public override void OnUpdate(float deltaTime) {
