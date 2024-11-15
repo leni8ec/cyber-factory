@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace CyberFactory.Basics {
+namespace CyberFactory.Basics.Objects {
     public class DisposableTracker : IDisposable {
 
         private readonly Stack<IDisposable> disposables = new();

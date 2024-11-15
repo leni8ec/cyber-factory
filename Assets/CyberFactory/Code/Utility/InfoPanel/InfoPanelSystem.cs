@@ -13,22 +13,24 @@ namespace CyberFactory.Utility.InfoPanel {
     [CreateAssetMenu(menuName = AssetMenu.Utility.SYSTEM + "InfoPanel", fileName = nameof(InfoPanelSystem), order = AssetMenu.Utility.ORDER)]
     public sealed class InfoPanelSystem : LateUpdateSystem {
         private InventoryService inventory;
-        private Filter filter;
+        private Filter inventoryFilter;
 
+        private Filter filter;
         private StringBuilder stringBuilder;
 
         public override void OnAwake() {
             filter = World.Filter.With<InfoPanelComponent>().Build();
-
-            var inventories = World.Filter.With<Inventory>().Build();
-            inventory = inventories.FirstOrDefault().GetComponent<Inventory>().service;
-
+            inventoryFilter = World.Filter.With<Inventory>().Build();
             stringBuilder = new StringBuilder();
+        }
 
+        public override void Dispose() {
+            inventory = null;
         }
 
         // todo: use events instead update
         public override void OnUpdate(float deltaTime) {
+            inventory ??= inventoryFilter.FirstOrDefault().GetComponent<Inventory>().service;
             foreach (var entity in filter) {
                 var infoPanel = entity.GetComponent<InfoPanelComponent>();
 

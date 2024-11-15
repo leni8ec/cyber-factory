@@ -1,12 +1,12 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
-using CyberFactory.Common.States;
 using Scellecs.Morpeh;
+using Scellecs.Morpeh.Systems;
 using UnityEngine;
 
 namespace CyberFactory.Common.Timer {
 
     [CreateAssetMenu(menuName = AssetMenu.Common.SYSTEM + "Timer")]
-    public sealed class TimerSystem : Scellecs.Morpeh.Systems.UpdateSystem {
+    public sealed class TimerSystem : UpdateSystem {
         private Filter filter;
 
         public override void OnAwake() {

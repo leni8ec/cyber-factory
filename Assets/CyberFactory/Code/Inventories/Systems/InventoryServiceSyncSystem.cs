@@ -1,7 +1,7 @@
 using System;
-using CyberFactory.Basics;
 using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Basics.Extensions;
+using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Events;
@@ -49,6 +49,8 @@ namespace CyberFactory.Inventories.Systems {
         public override void Dispose() {
             disposable.Dispose();
             inventoryStateProcessor.Dispose();
+
+            // todo: temp fix (remove it after implement DI 'VContainer')
             service.Dispose();
             service = null;
         }

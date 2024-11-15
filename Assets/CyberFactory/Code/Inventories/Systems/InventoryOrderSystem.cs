@@ -1,7 +1,6 @@
-﻿using System;
-using CyberFactory.Basics;
-using CyberFactory.Basics.Constants.Editor;
+﻿using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Basics.Extensions;
+using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
 using CyberFactory.Common.States;
 using CyberFactory.Inventories.Components;
@@ -51,9 +50,9 @@ namespace CyberFactory.Inventories.Systems {
 
         public override void Dispose() {
             disposable.Dispose();
-            
-            // todo: Не понятно, как так происходит, что inventory не зануляется без перезагрузки домена!??
-            inventory = null; 
+
+            // todo: temp fix (remove it after implement DI 'VContainer')
+            inventory = null;
         }
 
         public override void OnUpdate(float deltaTime) {
