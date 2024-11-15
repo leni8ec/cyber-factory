@@ -1,12 +1,13 @@
 ﻿using CyberFactory.Basics.Constants.Editor;
 using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
-using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Queries;
+using CyberFactory.Inventories.Services;
 using CyberFactory.Products.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
+using VContainer;
 
 namespace CyberFactory.Inventories.Systems {
     /// <summary>
@@ -17,22 +18,20 @@ namespace CyberFactory.Inventories.Systems {
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Release", fileName = nameof(InventoryReleaseSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryReleaseSystem : UpdateSystem {
 
+        [Inject] private InventoryService Inventory { get; init; }
+
         private Filter releaseItems;
-        private Filter inventories;
 
         public override void OnAwake() {
             releaseItems = World.Filter.With<Product>().With<InventoryItemReleaseCall>().Build();
-            inventories = World.Filter.With<Inventory>().Build();
         }
 
         public override void OnUpdate(float deltaTime) {
-            var service = inventories.FirstOrDefault().GetComponent<Inventory>().service;
-
             foreach (var releaseItem in releaseItems) {
                 releaseItem.RemoveComponent<InventoryItemReleaseCall>();
                 var releaseProduct = releaseItem.GetComponent<Product>();
 
-                var itemEntity = service.TryGet(releaseProduct, out bool itemExists);
+                var itemEntity = Inventory.TryGet(releaseProduct, out bool itemExists);
                 if (!itemExists) {
                     Debug.LogWarning("[Inventory] Item to release - isn't exists");
                     World.RemoveEntity(releaseItem);

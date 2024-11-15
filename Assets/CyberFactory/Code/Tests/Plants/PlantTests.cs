@@ -3,7 +3,6 @@ using System.Linq;
 using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
 using CyberFactory.Common.States;
-using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Queries;
 using CyberFactory.Inventories.Services;
 using CyberFactory.Inventories.Systems;
@@ -64,8 +63,7 @@ namespace CyberFactory.Tests.Plants {
                 plants[i] = plantEntity;
             }
             // inventory service
-            inventory = testWorld.Filter.With<Inventory>().Build()
-                .FirstOrDefault().GetComponent<Inventory>().service;
+            inventory = new InventoryService();
 
         }
 

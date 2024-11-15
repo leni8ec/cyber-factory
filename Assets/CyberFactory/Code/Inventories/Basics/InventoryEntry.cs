@@ -1,11 +1,8 @@
 ﻿using System;
 using CyberFactory.Products.Models;
 using Scellecs.Morpeh;
-using Scellecs.Morpeh.Providers;
 
-namespace CyberFactory.Inventories.Components {
-
-    public class InventoryProvider : MonoProvider<Inventory> { }
+namespace CyberFactory.Inventories.Basics {
 
     [Serializable]
     public struct InventoryEntry {

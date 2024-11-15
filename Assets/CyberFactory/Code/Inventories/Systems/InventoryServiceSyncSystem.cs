@@ -11,6 +11,7 @@ using CyberFactory.Products.Models;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
+using VContainer;
 
 namespace CyberFactory.Inventories.Systems {
 
@@ -21,7 +22,7 @@ namespace CyberFactory.Inventories.Systems {
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Service Sync", fileName = nameof(InventoryServiceSyncSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryServiceSyncSystem : UpdateSystem {
 
-        private InventoryService service;
+        [Inject] private InventoryService Inventory { get; init; }
 
         private Filter itemsChangedCountFilter;
         private SystemStateProcessor<InventorySynchronizedState> inventoryStateProcessor;
@@ -31,10 +32,6 @@ namespace CyberFactory.Inventories.Systems {
         public override void OnAwake() {
             Debug.Log("InventoryServiceSyncSystem OnAwake");
             disposable = new DisposableTracker();
-            service = new InventoryService();
-
-            ref var inventoryComponent = ref World.CreateEntity().AddComponent<Inventory>();
-            inventoryComponent.service = service;
 
             itemsChangedCountFilter = World.Filter.With<Product>().With<InventoryItem>().With<ChangedCount>().Build();
             inventoryStateProcessor = World.Filter.With<Product>().With<InventoryItem>().ToSystemStateProcessor(AddedToInventory, RemovedFromInventory);
@@ -49,10 +46,6 @@ namespace CyberFactory.Inventories.Systems {
         public override void Dispose() {
             disposable.Dispose();
             inventoryStateProcessor.Dispose();
-
-            // todo: temp fix (remove it after implement DI 'VContainer')
-            service.Dispose();
-            service = null;
         }
 
         public override void OnUpdate(float deltaTime) {
@@ -81,20 +74,20 @@ namespace CyberFactory.Inventories.Systems {
 
         private InventorySynchronizedState AddedToInventory(Entity entity) {
             var product = entity.GetComponent<Product>();
-            bool hasAdded = service.TrySyncOnAdd(product, entity);
+            bool hasAdded = Inventory.TrySyncOnAdd(product, entity);
             if (!hasAdded) {
-                Debug.LogWarning("[Inventory] service sync issue - added item is already exists (it's not stackable)");
+                Debug.LogWarning("[Inventory] service sync issue - added item is already exists (it's not stackable)"); // todo: fix this case
                 return default;
             }
 
-            int count = product.model.stackable ? service.Count(product.model) : 1;
+            int count = product.model.stackable ? Inventory.Count(product.model) : 1;
             OnItemAdded(product.model, count);
 
             return new InventorySynchronizedState { product = product };
         }
 
         private void RemovedFromInventory(ref InventorySynchronizedState state) {
-            bool hasRemoved = service.TrySyncOnRemove(state.product);
+            bool hasRemoved = Inventory.TrySyncOnRemove(state.product);
             if (!hasRemoved) Debug.LogWarning($"[Inventory] service sync issue - remove item {state.product.model.name} isn't exists");
 
             OnItemRemoved(state.product.model);

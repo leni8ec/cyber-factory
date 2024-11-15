@@ -21,7 +21,7 @@ namespace CyberFactory.Tests.Inventories {
 
         private Filter inventoryItems;
         private ProductModel[] products;
-        private InventoryService service;
+        private InventoryService inventory;
 
         // ReSharper disable once GrammarMistakeInComment
         private readonly Regex inventoryPrefixRegex = new("^.Inventory.*"); // match "[Inventory*"
@@ -40,8 +40,7 @@ namespace CyberFactory.Tests.Inventories {
                 product.name = $"Product_{i}";
                 products[i] = product;
             }
-            service = testWorld.Filter.With<Inventory>().Build()
-                .FirstOrDefault().GetComponent<Inventory>().service;
+            inventory = new InventoryService();
         }
 
 
@@ -82,10 +81,10 @@ namespace CyberFactory.Tests.Inventories {
 
             // Assert
             Assert.That(inventoryItems.GetLengthSlow() == 1);
-            Assert.That(service.ItemsCount == 1);
+            Assert.That(inventory.ItemsCount == 1);
 
             // Result
-            var inventoryItem = service.Get(testProduct);
+            var inventoryItem = inventory.Get(testProduct);
             int result = inventoryItem.GetComponent<Count>().value;
             Debug.Log($"----- Result: [ {result} ] -----");
             return result;
@@ -126,12 +125,12 @@ namespace CyberFactory.Tests.Inventories {
             int expectedResult = Mathf.Max(0, Mathf.Max(0, initCount) - counts.Where(count => count > 0).Sum());
             int expectedInventoryCount = expectedResult > 0 ? 1 : 0;
             Assert.That(inventoryItems.GetLengthSlow() == expectedInventoryCount);
-            Assert.That(service.ItemsCount == expectedInventoryCount);
+            Assert.That(inventory.ItemsCount == expectedInventoryCount);
 
             // Result
             int result = 0;
             if (expectedInventoryCount > 0) {
-                var inventoryItem = service.Get(testProduct);
+                var inventoryItem = inventory.Get(testProduct);
                 result = inventoryItem.GetComponent<Count>().value;
             }
             Debug.Log($"----- Result: [ {result} ] (expected: {expectedResult}) -----");
@@ -187,14 +186,14 @@ namespace CyberFactory.Tests.Inventories {
             int n = Mathf.Min(initCounts.Length, requestItemsCounts.Length);
             for (int i = 0; i < n; i++) {
                 var product = products[i];
-                int remainingCount = service.Has(product) ? service.Get(product).GetComponent<Count>().value : 0;
+                int remainingCount = inventory.Has(product) ? inventory.Get(product).GetComponent<Count>().value : 0;
                 int expectedRemainingCount = Mathf.Max(0, initCounts[i]) - (isRequestApproved ? Mathf.Max(0, requestItemsCounts[i]) : 0);
 
                 // Debug.Log($"Remaining items: [{i}] '{product.name}' -> '{remainingCount}' (expected: '{expectedRemainingCount}')");
 
                 Assert.AreEqual(remainingCount, expectedRemainingCount);
                 if (expectedRemainingCount <= 0) {
-                    Assert.That(!service.Has(product));
+                    Assert.That(!inventory.Has(product));
                 }
             }
 

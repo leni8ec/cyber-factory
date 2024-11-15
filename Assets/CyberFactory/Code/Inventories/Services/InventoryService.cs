@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CyberFactory.Common.Components;
 using CyberFactory.Products.Components;
 using CyberFactory.Products.Models;
@@ -10,16 +9,11 @@ using UnityEngine;
 namespace CyberFactory.Inventories.Services {
 
     // todo: there is no implemented solution for storing not stackable items
-    public class InventoryService : IDisposable {
-        private Dictionary<ProductModel, Entity> items = new();
+    public class InventoryService {
+        private readonly Dictionary<ProductModel, Entity> items = new();
         public IReadOnlyDictionary<ProductModel, Entity> Items => items;
 
         public int ItemsCount => items.Count;
-
-        public void Dispose() {
-            items.Clear();
-            items = null;
-        }
 
         public bool Has(Product product) {
             return Has(product.model);
@@ -34,7 +28,6 @@ namespace CyberFactory.Inventories.Services {
         }
 
         public bool Has(ProductsSet productsSet) {
-            Debug.Log(this.GetHashCode());
             if (productsSet.IsEmpty) {
                 Debug.LogWarning("[Inventory] Checked 'ProductSet' is empty!");
                 return true;

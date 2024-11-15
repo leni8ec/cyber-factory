@@ -3,7 +3,6 @@ using CyberFactory.Basics.Extensions;
 using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
 using CyberFactory.Common.States;
-using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Events;
 using CyberFactory.Inventories.Queries;
 using CyberFactory.Inventories.Services;
@@ -11,6 +10,7 @@ using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
+using VContainer;
 
 namespace CyberFactory.Inventories.Systems {
 
@@ -21,8 +21,8 @@ namespace CyberFactory.Inventories.Systems {
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Order", fileName = nameof(InventoryOrderSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryOrderSystem : UpdateSystem {
 
-        private Filter inventoryFilter;
-        private InventoryService inventory;
+        [Inject] private InventoryService Inventory { get; init; }
+
         /// New incoming orders
         private Filter incomingOrders;
         /// Orders that are pending for inventory refill
@@ -33,7 +33,6 @@ namespace CyberFactory.Inventories.Systems {
 
         public override void OnAwake() {
             disposable = new DisposableTracker();
-            inventoryFilter = World.Filter.With<Inventory>().Build();
 
             incomingOrders = World.Filter
                 .With<ActiveState>().With<InventoryProductsOrder>()
@@ -50,14 +49,9 @@ namespace CyberFactory.Inventories.Systems {
 
         public override void Dispose() {
             disposable.Dispose();
-
-            // todo: temp fix (remove it after implement DI 'VContainer')
-            inventory = null;
         }
 
         public override void OnUpdate(float deltaTime) {
-            inventory ??= inventoryFilter.FirstOrDefault().GetComponent<Inventory>().service;
-
             if (incomingOrders.IsEmpty()) return;
             // Debug.Log($"InventoryOrderSystem: new incoming orders is available");
             CheckOrders(incomingOrders, false);
@@ -73,7 +67,7 @@ namespace CyberFactory.Inventories.Systems {
         private void CheckOrders(Filter filter, bool isPendingRefillOrders) {
             foreach (var orderEntity in filter) {
                 var order = orderEntity.GetComponent<InventoryProductsOrder>();
-                bool isMissingProducts = !order.IsEmpty && !inventory.Has(order.products);
+                bool isMissingProducts = !order.IsEmpty && !Inventory.Has(order.products);
                 if (isMissingProducts) {
                     if (!isPendingRefillOrders) orderEntity.AddComponent<InventoryRefillPending>();
                     continue;
@@ -100,7 +94,7 @@ namespace CyberFactory.Inventories.Systems {
                     continue; // Issue log error, but do not break the process 
                 }
 
-                var itemEntity = inventory.Get(product);
+                var itemEntity = Inventory.Get(product);
                 if (!product.stackable) {
                     World.RemoveEntity(itemEntity); // Remove orders entities from inventory
                 } else {

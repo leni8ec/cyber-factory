@@ -3,10 +3,12 @@ using CyberFactory.Basics.Extensions;
 using CyberFactory.Common.Components;
 using CyberFactory.Inventories.Components;
 using CyberFactory.Inventories.Queries;
+using CyberFactory.Inventories.Services;
 using CyberFactory.Products.Components;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
+using VContainer;
 
 namespace CyberFactory.Inventories.Systems {
     /// <summary>
@@ -16,21 +18,19 @@ namespace CyberFactory.Inventories.Systems {
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Pull", fileName = nameof(InventoryPullSystem), order = AssetMenu.Inventory.ORDER)]
     public class InventoryPullSystem : UpdateSystem {
 
+        [Inject] private InventoryService Inventory { get; init; }
+
         private Filter pullItems;
-        private Filter inventories;
 
         public override void OnAwake() {
             pullItems = World.Filter.With<InventoryItemPullCall>().Build();
-            inventories = World.Filter.With<Inventory>().Build();
         }
 
         public override void OnUpdate(float deltaTime) {
-            var service = inventories.FirstOrDefault().GetComponent<Inventory>().service;
-
             foreach (var pullEntity in pullItems) {
                 var pullProduct = pullEntity.GetComponent<Product>();
 
-                bool itemExists = service.Has(pullProduct);
+                bool itemExists = Inventory.Has(pullProduct);
                 var pullCount = pullEntity.GetComponent<Count>(out bool stackable);
 
                 if (stackable && pullCount <= 0) {
@@ -40,7 +40,7 @@ namespace CyberFactory.Inventories.Systems {
                 }
 
                 if (itemExists && stackable) { // Add item count - if product exists and stackable
-                    var itemEntity = service.Get(pullProduct);
+                    var itemEntity = Inventory.Get(pullProduct);
 
                     ref var itemCount = ref itemEntity.GetComponent<Count>();
                     itemCount.ChangeSmart(pullCount, itemEntity); // add pull count

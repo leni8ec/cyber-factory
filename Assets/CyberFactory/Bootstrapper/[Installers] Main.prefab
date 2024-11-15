@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 2510341364360519661}
   - component: {fileID: 393356813669607101}
   m_Layer: 0
-  m_Name: 'Main [Installers]'
+  m_Name: '[Installers] Main'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
