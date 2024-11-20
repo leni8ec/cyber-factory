@@ -19,7 +19,7 @@ namespace CyberFactory.Inventories.Systems {
     /// note: Order - [Second] (or [First] if without 'Release' system)
     /// </summary>
     [CreateAssetMenu(menuName = AssetMenu.Inventory.SYSTEM + "Order", fileName = nameof(InventoryOrderSystem), order = AssetMenu.Inventory.ORDER)]
-    public class InventoryOrderSystem : UpdateSystem {
+    public sealed class InventoryOrderSystem : UpdateSystem {
 
         [Inject] private InventoryService Inventory { get; init; }
 

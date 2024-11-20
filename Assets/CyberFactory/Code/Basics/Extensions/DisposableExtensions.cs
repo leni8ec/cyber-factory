@@ -4,8 +4,9 @@ using CyberFactory.Basics.Objects;
 namespace CyberFactory.Basics.Extensions {
     public static class DisposableExtensions {
 
-        public static void AddTo(this IDisposable disposable, DisposableTracker disposableToAdd) {
+        public static T AddTo<T>(this T disposable, DisposableTracker disposableToAdd) where T : IDisposable {
             disposableToAdd.Add(disposable);
+            return disposable;
         }
 
     }

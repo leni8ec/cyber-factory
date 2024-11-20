@@ -3,12 +3,14 @@ using CyberFactory.Common.Components;
 using CyberFactory.Products.Components;
 using CyberFactory.Products.Models;
 using CyberFactory.Products.Objects;
+using JetBrains.Annotations;
 using Scellecs.Morpeh;
 using UnityEngine;
 
 namespace CyberFactory.Inventories.Services {
 
     // todo: there is no implemented solution for storing not stackable items
+    [UsedImplicitly]
     public class InventoryService {
         private readonly Dictionary<ProductModel, Entity> items = new();
         public IReadOnlyDictionary<ProductModel, Entity> Items => items;

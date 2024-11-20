@@ -30,7 +30,6 @@ namespace CyberFactory.Inventories.Systems {
         private DisposableTracker disposable;
 
         public override void OnAwake() {
-            Debug.Log("InventoryServiceSyncSystem OnAwake");
             disposable = new DisposableTracker();
 
             itemsChangedCountFilter = World.Filter.With<Product>().With<InventoryItem>().With<ChangedCount>().Build();

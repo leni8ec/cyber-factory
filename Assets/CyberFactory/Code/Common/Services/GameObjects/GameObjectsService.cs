@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CyberFactory.Common.Services.GameObjects {
+    // todo: maybe use it as "Util" instead of "Service"
     [UsedImplicitly]
     public class GameObjectsService {
 
