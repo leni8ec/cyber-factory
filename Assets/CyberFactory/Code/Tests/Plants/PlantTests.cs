@@ -12,6 +12,7 @@ using CyberFactory.Plants.Production.Systems;
 using CyberFactory.Products.Components;
 using CyberFactory.Products.Models;
 using CyberFactory.Products.Objects;
+using CyberFactory.Tests.Fixtures;
 using NUnit.Framework;
 using Scellecs.Morpeh;
 using UnityEngine;

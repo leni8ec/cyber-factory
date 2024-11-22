@@ -6,30 +6,31 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-namespace CyberFactory.Tests {
-
+namespace CyberFactory.Tests.Fixtures {
     /// <summary>
+    /// Create test world with systems<br/>
+    /// <br/>
     /// Source: https://github.com/scellecs/morpeh.examples.tanks/blob/master/Assets/Tanks.Code/Tests/EcsTestFixture.cs
     /// </summary>
     [TestFixture]
-    public abstract class MorpehTestFixture {
+    public abstract class TestFixtureMorpehLayer {
         protected World testWorld;
 
         private SystemsGroup testSystems;
 
         [SetUp]
-        public void FixtureSetUp() {
+        public virtual void FixtureSetUp() {
             testWorld = World.Create();
             testWorld.UpdateByUnity = false;
 
             testSystems = testWorld.CreateSystemsGroup();
-            InitSystems(testSystems);
+            RegisterSystems(testSystems);
             testWorld.AddSystemsGroup(0, testSystems);
             testWorld.Update(0f);
         }
 
         [TearDown]
-        public void FixtureTearDown() {
+        public void MorpehFixtureTearDown() {
             testSystems.Dispose();
             testSystems = null;
 
@@ -52,26 +53,33 @@ namespace CyberFactory.Tests {
         }
 
         /// Called before [SetUp] from derived class
-        protected abstract void InitSystems(SystemsGroup systemsGroup);
+        protected abstract void RegisterSystems(SystemsGroup systemsGroup);
+
 
         protected void AddSystem<T>() where T : ScriptableObject, ISystem {
-            var systemInstance = ScriptableObject.CreateInstance<T>();
-            testSystems.AddSystem(systemInstance);
+            var system = ScriptableObject.CreateInstance<T>();
+            testSystems.AddSystem(system);
+            OnSystemAdded(system);
         }
 
         protected void AddInitializerSystem<T>() where T : Initializer {
-            ScriptableObject.CreateInstance<T>();
+            var system = ScriptableObject.CreateInstance<T>();
+            testSystems.AddInitializer(system);
+            OnSystemAdded(system);
         }
 
         protected void RegisterAdditionalSystems(ISystem[] systems) {
             SystemsGroup systemsGroup = testWorld.CreateSystemsGroup();
             foreach (ISystem system in systems) {
                 systemsGroup.AddSystem(system);
+                OnSystemAdded(system);
             }
 
             testWorld.AddSystemsGroup(1, systemsGroup);
             testWorld.Update(0f);
         }
+
+        protected virtual void OnSystemAdded(IInitializer system) { }
 
         /// Run all systems multiple times (default: 5) for 1 second each
         protected void RunAllSystemsMultipleTimes(int repeat = 5) {
