@@ -7,6 +7,7 @@ namespace CyberFactory.Products.Installers {
 
         protected override void Install(IContainerBuilder builder) {
 
+            builder.Register<ProductGhostSpawner>(Lifetime.Singleton);
             builder.Register<ProductGhostFactory>(Lifetime.Singleton);
 
         }

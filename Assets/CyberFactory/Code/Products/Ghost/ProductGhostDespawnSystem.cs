@@ -3,10 +3,14 @@ using CyberFactory.Common.Timer;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
+using VContainer;
 
 namespace CyberFactory.Products.Ghost {
     [CreateAssetMenu(menuName = AssetMenu.Products.SYSTEM + "Product Ghost Destroy", order = AssetMenu.Products.ORDER_VIEW)]
-    public sealed class ProductGhostDestroySystem : CleanupSystem {
+    public sealed class ProductGhostDespawnSystem : CleanupSystem {
+
+        [Inject] private ProductGhostSpawner Spawner { get; init; }
+
         private Filter ghosts;
 
         public override void OnAwake() {
@@ -15,9 +19,11 @@ namespace CyberFactory.Products.Ghost {
         }
 
         public override void OnUpdate(float deltaTime) {
-            foreach (var ghostEntity in ghosts) {
-                ghostEntity.Dispose(); // game object is destroyed in 'ProductGhost'
-            }
+            foreach (var ghostEntity in ghosts) Despawn(ghostEntity);
+        }
+
+        private void Despawn(Entity entity) {
+            Spawner.Despawn(entity);
         }
 
     }

@@ -4,6 +4,7 @@ using CyberFactory.Basics.Extensions;
 using CyberFactory.Basics.Objects;
 using CyberFactory.Plants.Core.Components.View;
 using CyberFactory.Products.Events;
+using Cysharp.Threading.Tasks;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Systems;
 using UnityEngine;
@@ -13,25 +14,34 @@ namespace CyberFactory.Products.Ghost {
     [CreateAssetMenu(menuName = AssetMenu.Plants.SYSTEM + "Product Ghost Create", order = AssetMenu.Plants.ORDER_VIEW)]
     public sealed class ProductGhostSpawnSystem : Initializer {
 
-        [Inject] private ProductGhostFactory Factory { get; init; }
+        [Inject] private ProductGhostSpawner spawner;
 
         private DisposableTracker disposable;
         private CancellationTokenSource tokenSource;
+
+        private const int POOL_INITIAL_SIZE = 3;
 
         public override void OnAwake() {
             disposable = new DisposableTracker();
             tokenSource = new CancellationTokenSource().AddTo(disposable);
 
-            World.GetEvent<ProductCreatedEvent>().Subscribe(events => {
-                foreach (var e in events) {
-                    var plantView = e.plantEntity.GetComponent<PlantView>();
-                    var sourcePosition = plantView.transform.position;
-                    var ghostConfig = plantView.productGhostConfig;
-                    var spriteReference = e.product.icon;
+            AwakeAsync(tokenSource.Token).Forget();
 
-                    Factory.CreateAsync(ghostConfig, spriteReference, sourcePosition, tokenSource.Token).Forget();
+            World.GetEvent<ProductCreatedEvent>().Subscribe(events => {
+                foreach (var @event in events) {
+                    var plantView = @event.plantEntity.GetComponent<PlantView>();
+                    var ghostConfig = plantView.productGhostConfig;
+                    var sourcePosition = plantView.transform.position;
+                    var spriteReference = @event.product.icon;
+
+                    spawner.SpawnAsync(ghostConfig, spriteReference, sourcePosition, tokenSource.Token).Forget();
+
                 }
             }).AddTo(disposable);
+        }
+
+        private async UniTaskVoid AwakeAsync(CancellationToken token) {
+            await spawner.PrepareAsync(POOL_INITIAL_SIZE, token);
         }
 
         public override void Dispose() {

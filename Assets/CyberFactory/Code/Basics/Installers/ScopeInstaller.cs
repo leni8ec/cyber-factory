@@ -1,6 +1,5 @@
 ﻿using CyberFactory.Basics.Extensions;
 using Scellecs.Morpeh;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -35,8 +34,8 @@ namespace CyberFactory.Basics.Installers {
 
         protected override void Configure(IContainerBuilder builder) {
             base.Configure(builder);
+            // Debug.Log($"Configuring scope installer: {name}");
 
-            Debug.Log($"Configuring scope installer: {name}");
             Install(builder);
         }
 
