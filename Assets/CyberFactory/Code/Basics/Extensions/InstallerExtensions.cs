@@ -6,7 +6,7 @@ namespace CyberFactory.Basics.Extensions {
     public static class InstallerExtensions {
 
         public static void ResolveInjection(this Installer installer, IObjectResolver resolver) {
-            Debug.Log("Inject Installer: " + installer.name);
+            // Debug.Log("Inject Installer: " + installer.name);
             foreach (var initializer in installer.initializers) InjectSystem(resolver, initializer);
             foreach (var pair in installer.fixedUpdateSystems) InjectSystem(resolver, pair.System);
             foreach (var pair in installer.updateSystems) InjectSystem(resolver, pair.System);
@@ -15,7 +15,7 @@ namespace CyberFactory.Basics.Extensions {
         }
 
         private static void InjectSystem<T>(IObjectResolver resolver, T system) where T : ScriptableObject, IInitializer {
-            Debug.Log($"Inject system: {system.name}");
+            // Debug.Log($"Inject system: {system.name}");
             resolver.Inject(system);
         }
 
