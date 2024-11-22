@@ -53,7 +53,8 @@ namespace CyberFactory.Inventories.Systems {
                     pullEntity.AddComponent<InventoryItem>();
                 }
 
-                break; // fix for sync inventory items (process only one item `pull` in frame)
+                // note: fix for sync inventory items, when multiple elements are created in 1 frame
+                // break; // process only one item `pull` call in frame
             }
         }
 

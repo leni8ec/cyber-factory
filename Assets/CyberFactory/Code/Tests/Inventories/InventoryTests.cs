@@ -15,19 +15,25 @@ using CyberFactory.Tests.Fixtures;
 using NUnit.Framework;
 using Scellecs.Morpeh;
 using UnityEngine;
+using VContainer;
 
 namespace CyberFactory.Tests.Inventories {
 
-    public class InventoryTests : MorpehTestFixture {
+    public class InventoryTests : SystemsTestFixture {
+
+        [Inject] private InventoryService Inventory { get; init; }
+        // ReSharper disable once UnusedMember.Local
+        private static readonly Regex INVENTORY_PREFIX_REGEX = new(".*[Inventory].*"); // match "[Inventory*"
 
         private Filter inventoryItems;
         private ProductModel[] products;
-        private InventoryService inventory;
 
-        // ReSharper disable once GrammarMistakeInComment
-        private readonly Regex inventoryPrefixRegex = new("^.Inventory.*"); // match "[Inventory*"
 
-        protected override void InitSystems(SystemsGroup systemsGroup) {
+        protected override void RegisterDependencies(IContainerBuilder builder) {
+            builder.Register<InventoryService>(Lifetime.Singleton);
+        }
+
+        protected override void RegisterSystems(SystemsGroup systemsGroup) {
             AddSystem<InventoryServiceSyncSystem>();
         }
 
@@ -41,7 +47,6 @@ namespace CyberFactory.Tests.Inventories {
                 product.name = $"Product_{i}";
                 products[i] = product;
             }
-            inventory = new InventoryService();
         }
 
 
@@ -82,10 +87,10 @@ namespace CyberFactory.Tests.Inventories {
 
             // Assert
             Assert.That(inventoryItems.GetLengthSlow() == 1);
-            Assert.That(inventory.ItemsCount == 1);
+            Assert.That(Inventory.ItemsCount == 1);
 
             // Result
-            var inventoryItem = inventory.Get(testProduct);
+            var inventoryItem = Inventory.Get(testProduct);
             int result = inventoryItem.GetComponent<Count>().value;
             Debug.Log($"----- Result: [ {result} ] -----");
             return result;
@@ -126,12 +131,12 @@ namespace CyberFactory.Tests.Inventories {
             int expectedResult = Mathf.Max(0, Mathf.Max(0, initCount) - counts.Where(count => count > 0).Sum());
             int expectedInventoryCount = expectedResult > 0 ? 1 : 0;
             Assert.That(inventoryItems.GetLengthSlow() == expectedInventoryCount);
-            Assert.That(inventory.ItemsCount == expectedInventoryCount);
+            Assert.That(Inventory.ItemsCount == expectedInventoryCount);
 
             // Result
             int result = 0;
             if (expectedInventoryCount > 0) {
-                var inventoryItem = inventory.Get(testProduct);
+                var inventoryItem = Inventory.Get(testProduct);
                 result = inventoryItem.GetComponent<Count>().value;
             }
             Debug.Log($"----- Result: [ {result} ] (expected: {expectedResult}) -----");
@@ -187,14 +192,14 @@ namespace CyberFactory.Tests.Inventories {
             int n = Mathf.Min(initCounts.Length, requestItemsCounts.Length);
             for (int i = 0; i < n; i++) {
                 var product = products[i];
-                int remainingCount = inventory.Has(product) ? inventory.Get(product).GetComponent<Count>().value : 0;
+                int remainingCount = Inventory.Has(product) ? Inventory.Get(product).GetComponent<Count>().value : 0;
                 int expectedRemainingCount = Mathf.Max(0, initCounts[i]) - (isRequestApproved ? Mathf.Max(0, requestItemsCounts[i]) : 0);
 
                 // Debug.Log($"Remaining items: [{i}] '{product.name}' -> '{remainingCount}' (expected: '{expectedRemainingCount}')");
 
                 Assert.AreEqual(remainingCount, expectedRemainingCount);
                 if (expectedRemainingCount <= 0) {
-                    Assert.That(!inventory.Has(product));
+                    Assert.That(!Inventory.Has(product));
                 }
             }
 

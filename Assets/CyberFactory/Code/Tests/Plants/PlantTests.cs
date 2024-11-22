@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using CyberFactory.Basics.Objects;
 using CyberFactory.Common.Components;
 using CyberFactory.Common.States;
@@ -12,25 +13,37 @@ using CyberFactory.Plants.Production.Systems;
 using CyberFactory.Products.Components;
 using CyberFactory.Products.Models;
 using CyberFactory.Products.Objects;
+using CyberFactory.Products.Systems;
 using CyberFactory.Tests.Fixtures;
 using NUnit.Framework;
 using Scellecs.Morpeh;
 using UnityEngine;
+using UnityEngine.TestTools;
+using VContainer;
 using Assert = UnityEngine.Assertions.Assert;
 
 namespace CyberFactory.Tests.Plants {
-    public class PlantTests : MorpehTestFixture {
+    public class PlantTests : SystemsTestFixture {
 
-        private InventoryService inventory;
+        [Inject] private InventoryService Inventory { get; init; }
+        private static readonly Regex INVENTORY_TAG_REGEX = new(".*[Inventory].*");
+
         private ProductModel[] products;
         private Entity[] plants;
 
-        protected override void InitSystems(SystemsGroup systemsGroup) {
-            // AddSystem<PlantInitializerSystem>(); - not required for test (plant level is set manual)
+
+        protected override void RegisterDependencies(IContainerBuilder builder) {
+            builder.Register<InventoryService>(Lifetime.Singleton);
+        }
+
+        protected override void RegisterSystems(SystemsGroup systemsGroup) {
+            // AddSystem<PlantInitializerSystem>(); // not required for test (plant level is set manually)
             AddSystem<PlantResourceRequestSystem>();
             AddSystem<PlantProductionStartSystem>();
             AddSystem<PlantProductionSystem>();
             AddSystem<PlantProductionCompleteSystem>();
+
+            AddSystem<ProductCreationSystem>();
 
             AddSystem<InventoryOrderSystem>();
             AddSystem<InventoryPullSystem>();
@@ -63,9 +76,6 @@ namespace CyberFactory.Tests.Plants {
                 plant.level = 1;
                 plants[i] = plantEntity;
             }
-            // inventory service
-            inventory = new InventoryService();
-
         }
 
         [Test]
@@ -111,8 +121,8 @@ namespace CyberFactory.Tests.Plants {
 
             // Assert
             foreach (var product in products) {
-                Assert.IsTrue(inventory.Has(product));
-                Assert.AreEqual(1, inventory.Count(product));
+                Assert.IsTrue(Inventory.Has(product));
+                Assert.AreEqual(1, Inventory.Count(product));
             }
             foreach (var plant in plants) {
                 Assert.IsTrue(!plant.Has<ProductionComplete>());
@@ -136,7 +146,7 @@ namespace CyberFactory.Tests.Plants {
                 Assert.IsTrue(plant.Has<ActiveState>()); // plant is active
             }
             foreach (var product in products) {
-                Assert.AreEqual(1, inventory.Count(product));
+                Assert.AreEqual(1, Inventory.Count(product));
             }
 
             // Assert new request (2nd time)
@@ -166,11 +176,17 @@ namespace CyberFactory.Tests.Plants {
                 Assert.IsTrue(plant.Has<ActiveState>()); // plant is active
             }
             foreach (var product in products) {
-                Assert.AreEqual(2, inventory.Count(product));
+                Assert.AreEqual(2, Inventory.Count(product));
             }
         }
 
-
+        /// <summary>
+        /// Тест на производство продукции по заданному рецепту<br/><br/>
+        /// todo: Надо упростить тест!
+        /// </summary>
+        /// <param name="inventoryProductsCounts">Изначальное количество продуктов</param>
+        /// <param name="recipeProductsCounts">Рецепт: Количество продуктов требуемое для производства одной единицы товара</param>
+        /// <returns>Итоговое количество произведенного продукта</returns>
         [Test]
         [TestCase(new[] { 1 }, new[] { 1 }, ExpectedResult = 1)]
         [TestCase(new[] { 10 }, new[] { 2 }, ExpectedResult = 5)]
@@ -189,17 +205,17 @@ namespace CyberFactory.Tests.Plants {
         [TestCase(new[] { 2, 0 }, new[] { 1, 0 }, ExpectedResult = 2)]
         [TestCase(new[] { 2, 0 }, new[] { 0, 0 }, ExpectedResult = 999)]
         [TestCase(new[] { 10, 20, 30, 40 }, new[] { 1, 2, 3, 4 }, ExpectedResult = 10)]
-        public int Production(int[] inventoryProductsCounts, int[] requestProductsCounts) { // 'productsCounts' -> [0..3]
+        public int RecipeProduction(int[] inventoryProductsCounts, int[] recipeProductsCounts) { // 'productsCounts' -> [0..3]
             // Determine max production cycles count
             const int unlimitedProductCount = 999;
             const int extraCyclesCount = 10;
-            bool isDummyRequest = requestProductsCounts.All(count => count == 0);
+            bool isDummyRequest = recipeProductsCounts.All(count => count == 0);
             int productionCyclesCount = 0;
             if (!isDummyRequest) {
                 productionCyclesCount = int.MaxValue; // initial value as max
                 for (int i = 0; i < inventoryProductsCounts.Length; i++) {
-                    if (requestProductsCounts[i] == 0) continue;
-                    int possibleCount = inventoryProductsCounts[i] / requestProductsCounts[i];
+                    if (recipeProductsCounts[i] == 0) continue;
+                    int possibleCount = inventoryProductsCounts[i] / recipeProductsCounts[i];
                     productionCyclesCount = Mathf.Min(productionCyclesCount, possibleCount);
                 }
             }
@@ -208,11 +224,22 @@ namespace CyberFactory.Tests.Plants {
             // Prepare recipe
             var productionProduct = products[4]; // products[0..3] - may be used as recipe items
             var productionPlant = plants[4];
-            var recipeProducts = new List<PairValue<ProductModel, int>>(requestProductsCounts.Length);
-            for (int i = 0; i < requestProductsCounts.Length; i++) {
-                recipeProducts.Add(new PairValue<ProductModel, int>(products[i], requestProductsCounts[i]));
+            var recipeProducts = new List<PairValue<ProductModel, int>>(recipeProductsCounts.Length);
+            for (int i = 0; i < recipeProductsCounts.Length; i++) {
+                recipeProducts.Add(new PairValue<ProductModel, int>(products[i], recipeProductsCounts[i]));
             }
             productionProduct.recipe = new ProductsSet(recipeProducts);
+
+            // Excepting log warnings
+            int exceptedTotalCyclesCount = 0 + (isDummyRequest ? 1 + extraCyclesCount : productionCyclesCount); // fgrkh!
+            for (int cycleIndex = 0; cycleIndex < exceptedTotalCyclesCount; cycleIndex++) {
+                foreach (int recipeProductCount in recipeProductsCounts) {
+                    if (recipeProductCount == 0) {
+                        // Debug.Log("Expect 0");
+                        LogAssert.Expect(INVENTORY_TAG_REGEX);
+                    }
+                }
+            }
 
             // Pull initial inventory items
             for (int i = 0; i < inventoryProductsCounts.Length; i++) {
@@ -238,7 +265,7 @@ namespace CyberFactory.Tests.Plants {
                 RunAllSystems(0f, 2); // prepare cycles
                 RunAllSystems(1f, 1); // production cycle
             }
-            int productCount = productionCyclesCount == 0 ? 0 : inventory.Count(productionProduct);
+            int productCount = productionCyclesCount == 0 ? 0 : Inventory.Count(productionProduct);
 
             // add extra cycles (to be safe)
             for (int i = 0; i < extraCyclesCount; i++) {
@@ -248,8 +275,8 @@ namespace CyberFactory.Tests.Plants {
 
             // Final assert for item count
             int finalProductCount = productCount;
-            if (inventory.Has(productionProduct))
-                finalProductCount = inventory.Count(productionProduct);
+            if (Inventory.Has(productionProduct))
+                finalProductCount = Inventory.Count(productionProduct);
             bool unlimitedProduction = finalProductCount > productCount && finalProductCount - productCount == extraCyclesCount;
             if (unlimitedProduction)
                 finalProductCount = unlimitedProductCount;
@@ -259,7 +286,7 @@ namespace CyberFactory.Tests.Plants {
 
             // Assert remaining products count
             RunAllSystems(0, 5);
-            List<int> usedProductsCounts = requestProductsCounts.Select((requestCount, i) =>
+            List<int> usedProductsCounts = recipeProductsCounts.Select((requestCount, i) =>
                 requestCount * productionCyclesCount).ToList();
             List<int> remainingProductsCounts = inventoryProductsCounts.Select((initCount, i) =>
                 Mathf.Max(0, initCount - usedProductsCounts[i])).ToList();
@@ -268,9 +295,9 @@ namespace CyberFactory.Tests.Plants {
             for (int i = 0; i < remainingProductsCounts.Count; i++) {
                 int remainingCount = remainingProductsCounts[i];
                 if (remainingCount > 0)
-                    Assert.AreEqual(remainingCount, inventory.Count(products[i]));
+                    Assert.AreEqual(remainingCount, Inventory.Count(products[i]));
                 else
-                    Assert.IsFalse(inventory.Has(products[i]));
+                    Assert.IsFalse(Inventory.Has(products[i]));
             }
 
             return finalProductCount;
@@ -280,6 +307,8 @@ namespace CyberFactory.Tests.Plants {
         #region Helpers
 
         private Entity PullProductToInventory(ProductModel product, int count) {
+            if (count <= 0) LogAssert.Expect(INVENTORY_TAG_REGEX);
+
             var entity = testWorld.CreateEntity();
             entity.AddComponent<Product>().model = product;
             entity.AddComponent<Count>().value = count;
