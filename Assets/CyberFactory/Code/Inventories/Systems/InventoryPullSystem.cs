@@ -34,7 +34,7 @@ namespace CyberFactory.Inventories.Systems {
                 var pullCount = pullEntity.GetComponent<Count>(out bool stackable);
 
                 if (stackable && pullCount <= 0) {
-                    Debug.LogWarning("[Inventory] Pull items 'Count' must be > '0'");
+                    Debug.LogWarning("[Inventory] Pull items 'Count' must be > '0' for stackable item");
                     World.RemoveEntity(pullEntity);
                     continue;
                 }

@@ -25,7 +25,7 @@ namespace CyberFactory.Products.Ghost {
             disposable = new DisposableTracker();
             tokenSource = new CancellationTokenSource().AddTo(disposable);
 
-            AwakeAsync(tokenSource.Token).Forget();
+            spawner.PrepareAsync(POOL_INITIAL_SIZE, tokenSource.Token).Forget();
 
             World.GetEvent<ProductCreatedEvent>().Subscribe(events => {
                 foreach (var @event in events) {
@@ -38,10 +38,6 @@ namespace CyberFactory.Products.Ghost {
 
                 }
             }).AddTo(disposable);
-        }
-
-        private async UniTaskVoid AwakeAsync(CancellationToken token) {
-            await spawner.PrepareAsync(POOL_INITIAL_SIZE, token);
         }
 
         public override void Dispose() {

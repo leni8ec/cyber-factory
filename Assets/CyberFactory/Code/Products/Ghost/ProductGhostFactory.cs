@@ -6,12 +6,12 @@ using Scellecs.Morpeh.Providers;
 using UnityEngine;
 using VContainer;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 namespace CyberFactory.Products.Ghost {
     public class ProductGhostFactory {
 
         [Inject] private GameObjectsService GameObjectsService { get; init; }
 
-        // public async UniTaskVoid CreateAsync(ProductGhostConfig config, AssetReferenceSprite spriteReference, Vector3 sourcePosition, CancellationToken token) {
         public async UniTask<Entity> CreateAsync(CancellationToken token) {
             // Create GameObject
             var gameObject = GameObjectsService.Create("Ghosts", "ProductGhost",
@@ -34,3 +34,4 @@ namespace CyberFactory.Products.Ghost {
 
     }
 }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
